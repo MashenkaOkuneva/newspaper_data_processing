@@ -2,7 +2,7 @@
 """
 Created on Tue Mar 30 22:06:27 2021
 
-@author: Nutzer
+@author: jbaer
 """
 
 from langdetect import detect
