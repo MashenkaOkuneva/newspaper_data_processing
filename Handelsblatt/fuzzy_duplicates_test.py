@@ -68,8 +68,8 @@ def fuzzy_duplicates_test(inputs):
                         delete = documents['index'][doc_id]
                         not_delete = documents['index'][sim_doc_id]
                     
-                    column1.append(inputs[2]['texts'][doc_id])  
-                    column2.append(inputs[2]['texts'][sim_doc_id])
+                    column1.append(documents['texts'][doc_id])  
+                    column2.append(documents['texts'][sim_doc_id])
                     column3.append(inputs[2]['texts'][delete])
                     column4.append(not_delete)
                     column5.append(delete)
