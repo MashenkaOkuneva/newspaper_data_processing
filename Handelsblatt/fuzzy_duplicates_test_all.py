@@ -11,8 +11,9 @@ from gensim.utils import simple_preprocess
 from gensim import corpora
 from gensim.similarities import Similarity
 from random import randrange
+import pandas as pd
 
-def fuzzy_duplicates(inputs):
+def fuzzy_duplicates_test(inputs):
     """ 
     This function returns the indices of duplicated articles.
     """ 
@@ -23,7 +24,7 @@ def fuzzy_duplicates(inputs):
     # data set.
     types_keep = ['DEUTSCHE AKTIEN', 'Fortsetzung von Seite']
     documents = documents[~(documents.texts.str.contains('|'.join(types_keep)))]
-    # There are a few articles that are classified as duplicates, even though
+    # There are a few articles that are classified to be duplicates, even though
     # they are not:
     exceptions = ['Im Vorstand der neuen DZ Bank sitzen künftig sechs Vorstandsmitglieder', 
                   'Stuttgart 21\\: Ist das Projekt noch zu stoppen\\?', 
@@ -60,6 +61,12 @@ def fuzzy_duplicates(inputs):
     # Return the indices of duplicated articles.
     delete_indices = []
     considered_pairs = []
+    column1 = []
+    column2 = []
+    column3 = []
+    column4 = []
+    column5 = []
+    column6 = []
     for doc_id, sim_doc_tuples in similar_docs.items():
         for sim_doc_tuple in sim_doc_tuples:
             sim_doc_id = sim_doc_tuple[0]
@@ -70,6 +77,25 @@ def fuzzy_duplicates(inputs):
                     considered_pairs.append((sim_doc_id, doc_id))
                     if len(documents['texts'][doc_id]) >= len(documents['texts'][sim_doc_id]):
                         delete_indices.append(documents['index'][sim_doc_id])
+                        delete = documents['index'][sim_doc_id]
+                        not_delete = documents['index'][doc_id]
                     else:
                         delete_indices.append(documents['index'][doc_id])
-    return delete_indices
+                        delete = documents['index'][doc_id]
+                        not_delete = documents['index'][sim_doc_id]
+                    
+                    column1.append(documents['texts'][doc_id])  
+                    column2.append(documents['texts'][sim_doc_id])
+                    column3.append(inputs[2]['texts'][delete])
+                    column4.append(not_delete)
+                    column5.append(delete)
+                    column6.append(sim_score)
+                    
+    test_df = pd.DataFrame({'doc': column1,
+                             'duplicate': column2,
+                             'shorter': column3,
+                             'index_nd': column4,
+                             'index_d': column5,
+                             'similarity': column6})
+
+    return test_df
