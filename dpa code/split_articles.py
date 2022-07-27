@@ -8,10 +8,9 @@ Created on Sun May 23 21:21:11 2021
 import re
 import pandas as pd
 
-# Define a function that splits up collections of articles into single articles
 def split_articles(multiple_articles):
     """
-    Returns split up articles
+    This function splits up collections of articles into single articles.
     """
     
     split_art =[]
@@ -22,39 +21,54 @@ def split_articles(multiple_articles):
         
         mult_art = []
 
-        # check if capitlaizeted words exist in text.
-        capital_words = re.findall(r'\b[A-ZÄÖÜß:\-]{10,}\b', row["texts"])
-             
+        # Check if fully capitalized words exist in article.
+        capital_words = re.findall(r'\b[A-ZÄÖÜß:\-]{5,}\b', row["texts"])
+          
+        # If there is more than one fully capitalized word (a.k.a titles) in 
+        # the article, check if fully capitalized words are at the beginning 
+        # of paragraphs. A fully capitalized at the beginning of a paragraph
+        # indicates the beginning of a new article
         if len(capital_words) > 1:
-            # split articles based on paragraphs and the occurence of uppercase
-            # words (a.k.a titles)
-            mult_art = re.findall(r'[A-ZÄÖÜß:-]{2,}(?:\s+[A-ZÄÖÜß:\-]+)+.{15,}?(?:\s{2,}|$)', row["texts"])    
+            # Split articles based on paragraphs and the occurence of fully 
+            # capitalized words 
+            mult_art = re.findall(r'[A-ZÄÖÜß:-]{2,}(?:\s+[A-ZÄÖÜß:\-]+)+.{30,}?(?:\s{2,}|$)', row["texts"])    
 
-        else:
-            
-            # search for dpa references
+        # A second indication for multiple articles is the occurence of 
+        # multiple dpa references. 
+        else: 
+            # Search for dpa references
             dpa_ref = re.findall(r'\(dpa.*?\)', row["texts"])
-
-            # if there is a dpa reference search for mutliple articles
+            # If there is a dpa reference search for mutliple articles
             if len(dpa_ref) >= 1:
                   
-                # split articles based on paragraphs
+                # Split articles based on paragraphs
                 mult_art = re.findall(r'(?:^.+?(?:\s{2,})|(?:\s{2,})).+?(?:\s{2,}|$)', row["texts"])     
                 
-                # the existence of more dpa references than number of articles indicates that we need
-                # a different pattern for splitting the articles
+                # The existence of more DPA references than paragraphs
+                # indicates that we need a different pattern for splitting the
+                # articles
                 if len(mult_art) < len(dpa_ref):
-                
+                    print(index)
+                    # Search for headline preceding the DPA references
                     headlines = re.findall(r'((?:^|(?<=\.))[^.]+?(?=\(dpa.+?))', row["texts"])
                     txt = row["texts"]
+                    
+                    # Repleace headline with 'SEP'
                     for headline in headlines:
                         txt = txt.replace(headline, 'SEP')
+                    
+                   # Split text by 'SEP' tokens
                     mult_art = [i.strip() for i in txt.split('SEP')][1:]
+                    
+                    # Store headline and splitted articles for metadata
                     mult_art = [headline + art for headline, art in zip(headlines, mult_art)]
 
             else:
                 
-                # split articles based on paragraphs (can sometimes lead to false positives)
+                # If neither capitalized words nor multiple DPA references can
+                # be found in the text split articles based on paragraphs
+                # This method can sometimes lead to false positives, hence the 
+                # two previous approaches
                 mult_art = re.findall(r'(?:^.+?(?:\s{2,})|(?:\s{2,})).+?(?:\s{2,}|$)', row["texts"])    
          
         if mult_art != []:
