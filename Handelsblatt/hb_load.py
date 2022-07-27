@@ -37,6 +37,7 @@ def hb_load(folder):
             only_titles = []    # title without a kicker and a subheading
             kickers_only = []   # only a kicker (might be important for filtering out irrelevant articles)
             word_c = []         # word count
+            page_list = []           # page number in the newspaper
             
             for article in root.findall('artikel'):
                 if article.find('inhalt') is not None: # if an article is not empty
@@ -91,6 +92,13 @@ def hb_load(folder):
                         news = article.find('metadaten').find('quelle').find('name').text
                         news = news.encode('utf-8').decode('utf-8')  # save the string as unicode
                         newspaper.append(news)
+                        
+                    # PAGE NUMBER IN THE NEWSPAPER
+                    page = ''
+                    if article.find('metadaten').find('quelle').find('seite-start') is not None: 
+                        page = article.find('metadaten').find('quelle').find('seite-start').text
+                        page = page.encode('utf-8').decode('utf-8')  # save the string as unicode
+                    page_list.append(page)                    
                         
                     # TEXT OF THE ARTICLE
                     # text consists of title + annotation + main_text                                 
@@ -160,7 +168,7 @@ def hb_load(folder):
                                 title = ' '.join(title.split()) # substitue multiple whitespaces with single whitespace
                                 
                                 # if there is no period, colon, semicolon, exclamation, question, or quotation mark 
-                                # at the end of the sentence, add it.
+                                # at the end of the sentence, add period.
                                 if title[-1] not in ['.', '!', ':', ';', '?', '"']: 
                                     title = title + '.' 
                                     
@@ -199,13 +207,7 @@ def hb_load(folder):
                                 par_text = par_text.strip()
                                 par_text = par_text.replace("\n", ' ')
                                 par_text = par_text.replace("\t", ' ')
-                                
-                                # if there is no period, colon, semicolon, exclamation, question, or quotation mark 
-                                # at the end of the sentence, add period.
-                                if par_text != '':
-                                    if (par_text[-1] not in ['.', '!', ':', ';', '?', '"', "'"]): 
-                                        par_text = par_text + '.' 
-                                                                       
+                                                                                                       
                                 paragraphs = paragraphs + ' ' + par_text
                                 
                                 # remove URLs
@@ -237,7 +239,8 @@ def hb_load(folder):
              'series_title': series_list,
              'title_only':  only_titles,
              'kicker': kickers_only,
-             'word_c': word_c
+             'word_c': word_c,
+             'page': page_list  
               })
             if data is not None:
                 data = data.append(data_intermediate, ignore_index = True)
