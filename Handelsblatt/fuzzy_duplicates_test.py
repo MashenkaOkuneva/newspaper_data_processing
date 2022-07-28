@@ -19,6 +19,11 @@ def fuzzy_duplicates_test(inputs):
     """ 
     # Select a new dataframe corresponding to a particular month and year.
     documents = inputs[2][(inputs[2]['year'] == inputs[0]) & (inputs[2]['month'] == inputs[1])]
+    # Articles of the same type (e.g., the ones about stock market) are often
+    # classified as near duplicates. Here are the types we want to keep in the
+    # data set.
+    types_keep = ['DEUTSCHE AKTIEN']
+    documents = documents[~(documents.texts.str.contains('|'.join(types_keep)))]
     # Reset the index of the DataFrame.
     documents = documents.reset_index()
     # Convert documents to a collection of words.
@@ -40,7 +45,7 @@ def fuzzy_duplicates_test(inputs):
         doc_id += 1
     
     # Set a similarity cutoff threshold.
-    sim_threshold = 0.9
+    sim_threshold = 0.93
     
     # Return the indices of duplicated articles.
     delete_indices = []
