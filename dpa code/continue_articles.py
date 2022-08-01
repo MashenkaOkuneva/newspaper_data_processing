@@ -17,7 +17,6 @@ def continue_articles(full_data):
     data = full_data[0]
     meta_data = full_data[1]
     
-    data.reset_index(inplace = True, drop = True)
     meta_data.reset_index(inplace = True, drop = True)
  
     drop_ind = []
@@ -39,7 +38,7 @@ def continue_articles(full_data):
                     
                     # Get title without '--[digit]' to identify the article on 
                     # which the continuation is based on
-                    clean_title = re.split(r'(--[0-9])|(--\s[0-9])', title)[0].replace('\n', '').strip()
+                    clean_title = re.split(r'(--[0-9])|(--\s[0-9])', title)[0].replace('\n', ' ').strip()
                     articles = data[data['title'].map(str).replace('\n', ' ', regex = True).str.contains(re.escape(clean_title), regex = True, na = False)].copy()
                     
                     # Save indices to delete articles later
