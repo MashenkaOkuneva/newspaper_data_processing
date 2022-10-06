@@ -52,75 +52,6 @@ def dpa_load(folder):
             # add the name of the XML file to the list
             file_names.append(s)
             
-
-            # TEXT OF THE ARTICLE
-            # text consists of title + main_text (paragraphs combined together)
-            text_new = ""
-            
-            # TITLE
-            title = ''
-            # If there is a 'title' tag in the XML data, and if the title is not empty
-            if soup.find("title") and soup.find("title").get_text() is not None and soup.find("title").get_text()!= u'':
-                title = soup.find("title").get_text()
-                title = title.encode('utf-8').decode('utf-8') # save the string as unicode
-                title = title.strip() # strip whitespace on both sides
-                title = title.replace("\n", ' ') # replace line break (new line character) with space
-                title = title.replace("\t", ' ') # replace tab with space
-                title = ' '.join(title.split()) # substitue multiple whitespaces with single whitespace
-                
-                # if there is no period, colon, semicolon, exclamation, question, or quotation mark 
-                # at the end of the sentence, add period.
-                if title != '':
-                    if title[-1] not in ['.', '!', ':', ';', '?', '"']: 
-                        title = title + '.'
-                    
-                text_new = text_new + title
-            # add the title to the corresponding list    
-            title_list.append(title)
-          
-            # PARAGRAPHS
-            if soup.find("text") is not None: # If there is a 'text' tag in the XML file
-                # If there is at least one paragraph with the tag "h:p"                                               
-                if len(soup.find("text").findAll("h:p", {"class":""})) != 0:
-                    try:
-                        # extract all the paragraphs as one list
-                        paragraphs = soup.find("text").findAll("h:p", {"class":""})
-                    except:
-                        paragraphs = ''
-                # If there is at least one paragraph with the tag "p"             
-                elif len(soup.find("text").findAll("p", {"class":""})) != 0:
-                    try:
-                        # extract all the paragraphs as one list
-                        paragraphs = soup.find("text").findAll("p", {"class":""})
-                    except:
-                        paragraphs = ''
-                # If there are no paragraph tags        
-                else:
-                    try:
-                        # extract the text and add it to a list
-                        paragraphs = [soup.find("text")]
-                    except:
-                        paragraphs = ''
-                        
-                # clean the paragraphs
-                for p in paragraphs:
-                    # replace all the line breaks with space
-                    if p.find("br") is not None:
-                        for br in p.findAll('br'):
-                            br.replace_with(" ")
-                    p = p.get_text()    # extract the text 
-                    p = p.encode('utf-8').decode('utf-8') # save the string as unicode
-                    p = p.strip()  # strip whitespace on both sides
-                    p = p.replace("\n", ' ') # replace line break (new line character) with space 
-                    p = p.replace("\t", ' ') # replace tab with space
-                    text_new = text_new + ' ' + p
-                    # replace a non-breaking space with a space
-                    text_new = re.sub('\xa0', ' ', text_new)
-                    # remove soft-hyphen
-                    text_new = re.sub('\xad', ' ', text_new)                   
-                    text_new = ' '.join(text_new.split()) # make sure that there are no extra white spaces
-            texts.append(text_new)
-                                  
             # TEXT LENGTH
             # split the tokens by space and calculate the length of the list
             # the second approach to calculate the text length from the Handelsblatt_clean notebook            
@@ -201,6 +132,81 @@ def dpa_load(folder):
                 except:
                     keywords_new = ''
             keywords.append(keywords_new)
+            
+            # TEXT OF THE ARTICLE
+            # text consists of title + main_text (paragraphs combined together)
+            text_new = ""
+            
+            # TITLE
+            # strings helping to identify multiple articles that should be treated differently
+            strings_ma = ['dpa-Nachrichtenüberblick', 'Nachrichtenüberblick', 'Kurznachrichten Wirtschaft', 'Analysten-Einstufungen', 'ANALYSTEN-EINSTUFUNGEN']
+            title = ''
+            # If there is a 'title' tag in the XML data, and if the title is not empty
+            if soup.find("title") and soup.find("title").get_text() is not None and soup.find("title").get_text()!= u'':
+                title = soup.find("title").get_text()
+                title = title.encode('utf-8').decode('utf-8') # save the string as unicode
+                title = title.strip() # strip whitespace on both sides
+                title = title.replace("\n", ' ') # replace line break (new line character) with space
+                title = title.replace("\t", ' ') # replace tab with space
+                title = ' '.join(title.split()) # substitue multiple whitespaces with single whitespace
+                
+                # if there is no period, colon, semicolon, exclamation, question, or quotation mark 
+                # at the end of the sentence, add period.
+                if title != '':
+                    if title[-1] not in ['.', '!', ':', ';', '?', '"']: 
+                        title = title + '.'
+                # add the title only if an article does not contain multiple articles
+                if all(s not in title for s in strings_ma) and all(s not in keywords_new for s in strings_ma) and all(s not in soup.find("genre").get_text() for s in strings_ma): 
+                    text_new = text_new + title
+            # add the title to the corresponding list    
+            title_list.append(title)
+            
+            # PARAGRAPHS
+            if soup.find("text") is not None: # If there is a 'text' tag in the XML file
+                # If there is at least one paragraph with the tag "h:p"                                               
+                if len(soup.find("text").findAll("h:p", {"class":""})) != 0:
+                    try:
+                        # extract all the paragraphs as one list
+                        paragraphs = soup.find("text").findAll("h:p", {"class":""})
+                    except:
+                        paragraphs = ''
+                # If there is at least one paragraph with the tag "p"             
+                elif len(soup.find("text").findAll("p", {"class":""})) != 0:
+                    try:
+                        # extract all the paragraphs as one list
+                        paragraphs = soup.find("text").findAll("p", {"class":""})
+                    except:
+                        paragraphs = ''
+                # If there are no paragraph tags        
+                else:
+                    try:
+                        # extract the text and add it to a list
+                        paragraphs = [soup.find("text")]
+                    except:
+                        paragraphs = ''
+                        
+                # clean the paragraphs
+                for p in paragraphs:
+                    # replace all the line breaks with space
+                    if p.find("br") is not None:
+                        for br in p.findAll('br'):
+                            br.replace_with(" ")
+                    p = p.get_text()    # extract the text 
+                    p = p.encode('utf-8').decode('utf-8') # save the string as unicode
+                    # pre-process further only if an article does not contain multiple articles
+                    if all(s not in title for s in strings_ma) and all(s not in keywords_new for s in strings_ma) and all(s not in soup.find("genre").get_text() for s in strings_ma):      
+                        p = p.strip()  # strip whitespace on both sides
+                        p = p.replace("\n", ' ') # replace line break (new line character) with space 
+                        p = p.replace("\t", ' ') # replace tab with space
+                    text_new = text_new + ' ' + p
+                    # replace a non-breaking space with a space
+                    text_new = re.sub('\xa0', ' ', text_new)
+                    # remove soft-hyphen
+                    text_new = re.sub('\xad', ' ', text_new)
+                    # pre-process further only if an article does not contain multiple articles
+                    if all(s not in title for s in strings_ma) and all(s not in keywords_new for s in strings_ma) and all(s not in soup.find("genre").get_text() for s in strings_ma): 
+                        text_new = ' '.join(text_new.split()) # make sure that there are no extra white spaces
+            texts.append(text_new)
               
     data = pd.DataFrame({'texts' : texts,
                      'file': file_names,
