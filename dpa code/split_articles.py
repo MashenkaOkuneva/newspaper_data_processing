@@ -471,8 +471,9 @@ def split_articles(multiple_articles):
                         
                         # A pattern to find the headlines following paragraphs without a period 
                         # at the end.
-                        if len(headlines) < len(mult_art)/2:
-                            headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa.+?)', txt)
+                        if len(headlines) < len(mult_art)/2 or \
+                        len(headlines) < len(re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
+                            headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
                         
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
