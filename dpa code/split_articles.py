@@ -45,10 +45,13 @@ def split_articles(multiple_articles):
         capital_words1 = re.findall(r'(?:\s{2,})[/A-ZÄÖÜß]{4,}\b', row["texts"])
         # Capitalized words at the beginning of the line.
         capital_words2 = re.findall(r'(?:\n)[A-ZÄÖÜß-]{5,}\b.{0,}(?<![a-z])\n', row["texts"])
+        # Headlines of the articles with multipe dpa references.
+        dpa_type = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa(?!\-Grafik).+?)', row['texts'].strip().replace("\n", ' ').replace("\t", ' '))
           
         # A fully capitalized word at the beginning of a paragraph
-        # indicates the beginning of a new article, 'BEGRENZTES' is an exception
-        if (len(capital_words1) > 1 and all('BEGRENZTES' not in w for w in capital_words1)) or len(capital_words2) > 1:
+        # indicates the beginning of a new article, 'BEGRENZTES' is an exception.
+        # Exclude articles with multiple dpa references.
+        if (len(capital_words1) > 1 and all('BEGRENZTES' not in w for w in capital_words1) and len(dpa_type) <= 1) or len(capital_words2) > 1:
             
             # Search for dpa references
             dpa_ref = re.findall(r'\(dpa.*?\)', row["texts"])
