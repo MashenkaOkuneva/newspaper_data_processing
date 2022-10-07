@@ -31,6 +31,9 @@ def split_articles(multiple_articles):
         if len(re.findall('\n\s+?\(Sperrfrist.+\)', row['texts'])) > 0:
             row['texts'] = re.sub('\n\s+?\(Sperrfrist.+\)','',row['texts'])
         
+        if ' bdt0055 3 pl 90  dpa 0062' in row['texts']:
+            row['texts'] = row['texts'].replace(' bdt0055 3 pl 90  dpa 0062', '')
+                
         weekday = ['MONTAG', 'DIENSTAG', 'MITTWOCH', 'DONNERSTAG', 'FREITAG']
         # In the articles of the type 'Analysten-Einstufungen', weekdays are not
         # headlines.
