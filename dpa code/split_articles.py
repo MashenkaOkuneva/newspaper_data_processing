@@ -469,13 +469,13 @@ def split_articles(multiple_articles):
                     if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa.+?)', txt)) > len(headlines):
                         headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.))[\S\s]+?(?=\(dpa.+?)', txt)
                         
-                        # A pattern to find the headlines following paragraphs without a period 
-                        # at the end.
-                        if len(headlines) < len(mult_art)/2 or \
-                        len(headlines) < len(re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
-                            headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
-                        
-                        headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
+                    # A pattern to find the headlines following paragraphs without a period 
+                    # at the end.
+                    if len(headlines) < len(mult_art)/2 or \
+                    len(headlines) < len(re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
+                        headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
+                    
+                    headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
                     # Replace headline with 'SEP'
                     for ind, headline in enumerate(headlines):
