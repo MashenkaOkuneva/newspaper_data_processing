@@ -564,7 +564,11 @@ def split_articles(multiple_articles):
                     else:
                         # Search for headline preceding the DPA references
                         headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa.+?)', txt)
-                    
+                        # Some headlines contain a period
+                        if len(headlines) < len(dpa_ref):
+                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n))[^\n]+?(?=\n.+?\(dpa.+?)', row['texts'])
+                            headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
+                            
                     if headlines != []:                       
                         # Replace headline with 'SEP'
                         for ind, headline in enumerate(headlines):
