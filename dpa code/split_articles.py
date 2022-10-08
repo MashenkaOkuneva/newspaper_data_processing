@@ -31,6 +31,10 @@ def split_articles(multiple_articles):
         if len(re.findall('\n\s+?\(Sperrfrist.+\)', row['texts'])) > 0:
             row['texts'] = re.sub('\n\s+?\(Sperrfrist.+\)','',row['texts'])
         
+        # Remove the docket number 
+        if len(re.findall(r'\(Aktenzeichen.+\)', row['texts'])) > 0:
+            row['texts'] = re.sub('\(Aktenzeichen.+\)','',row['texts'])            
+        
         if ' bdt0055 3 pl 90  dpa 0062' in row['texts']:
             row['texts'] = row['texts'].replace(' bdt0055 3 pl 90  dpa 0062', '')
                 
