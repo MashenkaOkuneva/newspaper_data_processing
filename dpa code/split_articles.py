@@ -37,6 +37,10 @@ def split_articles(multiple_articles):
         
         if ' bdt0055 3 pl 90  dpa 0062' in row['texts']:
             row['texts'] = row['texts'].replace(' bdt0055 3 pl 90  dpa 0062', '')
+        
+        # A typo that leads to the wrong splitting
+        if 'geben.s' in row['texts']:
+            row['texts'] = row['texts'].replace('geben.s', 'geben.')
                 
         weekday = ['MONTAG', 'DIENSTAG', 'MITTWOCH', 'DONNERSTAG', 'FREITAG']
         # In the articles of the type 'Analysten-Einstufungen', weekdays are not
