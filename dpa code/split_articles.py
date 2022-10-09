@@ -464,7 +464,8 @@ def split_articles(multiple_articles):
                         mult_art = [row["texts"].strip().replace("\n", ' ').replace("\t", ' ')]
                 
                 # If there is a headline that starts from .\n and ends with =
-                if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in row["texts"]):
+                if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in row["texts"]) and \
+                    len(mult_art) != 1:
                     headlines = re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
