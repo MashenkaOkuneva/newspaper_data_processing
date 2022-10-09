@@ -41,7 +41,8 @@ def split_articles(multiple_articles):
         # Typos that lead to the wrong splitting
         typos_dic = {
         "seien.,": "seien.",
-        "geben.s": "geben."}
+        "geben.s": "geben.",
+        "zulegte.1": "zulegte."}
         
         for typo, correction in typos_dic.items():
             row['texts'] = row['texts'].replace(typo, correction)  
