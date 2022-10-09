@@ -576,7 +576,7 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa.+?)', txt)
                         # Some headlines contain a period
                         if len(headlines) < len(dpa_ref):
-                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?)', row['texts'])
+                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
                             headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
