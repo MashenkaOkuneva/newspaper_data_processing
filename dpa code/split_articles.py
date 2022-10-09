@@ -550,6 +550,11 @@ def split_articles(multiple_articles):
                         # Headlines that start from .\s and end with dpa reference
                         headlines = re.findall(r'(?:^|(?<=\.\s{1}))[^\.]+?(?=\(dpa.+?)', txt)
                     
+                    # If there are headlines that start from .\s and end with the dpa reference
+                    # (no period inside a headline is allowed).
+                    if len(headlines) < len(re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa(?!\)\.|\) [a-z]).+?)', txt)):
+                        headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa(?!\)\.|\) [a-z]).+?)', txt)
+                    
                     # Replace headline with 'SEP'
                     for ind, headline in enumerate(headlines):
                         txt = txt.replace(headline, 'SEP', 1)
