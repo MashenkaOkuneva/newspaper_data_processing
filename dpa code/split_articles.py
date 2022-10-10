@@ -80,7 +80,7 @@ def split_articles(multiple_articles):
         # A fully capitalized word at the beginning of a paragraph
         # indicates the beginning of a new article, 'BEGRENZTES' is an exception.
         # Exclude articles with multiple dpa references.
-        if (len(capital_words1) > 1 and all('BEGRENZTES' not in w for w in capital_words1) and len(dpa_type) <= 1) or len(capital_words2) > 1:
+        if (len(capital_words1) > 1 and all('BEGRENZTES' not in w for w in capital_words1) and len(dpa_type) <= 1) or (len(capital_words2) > 1 and len(dpa_type) <= 1):
             
             # Search for dpa references
             dpa_ref = re.findall(r'\(dpa.*?\)', row["texts"])
