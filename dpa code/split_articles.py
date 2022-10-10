@@ -578,7 +578,7 @@ def split_articles(multiple_articles):
                     mult_art = [headline + ' ' + art for headline, art in zip(headlines, mult_art)]
                 # Another regular expression is required to split an article 
                 # into headlines and paragraphs
-                elif mult_art == [] or len(mult_art) == 1 or len(mult_art)<len(dpa_ref):
+                elif mult_art == [] or len(mult_art) == 1 or len(mult_art)<=len(dpa_ref):
                     # Special pattern for texts with one dpa reference
                     if len(dpa_ref) == 1 and title1 == '':
                         headlines = re.findall(r'(?:^)[\S\s]+?(?=\(dpa.+?)', txt)
