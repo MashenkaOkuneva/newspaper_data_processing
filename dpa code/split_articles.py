@@ -454,6 +454,7 @@ def split_articles(multiple_articles):
         else: 
             # Search for dpa references
             dpa_ref = re.findall(r'\(dpa.*?\)', row["texts"])
+                        
             # If there is a dpa reference in the article
             if len(dpa_ref) >= 1:
                 
@@ -487,6 +488,11 @@ def split_articles(multiple_articles):
                         mult_art = [headline + ' ' + art for headline, art in zip(headlines, mult_art)]  
                     else:
                         mult_art = [row["texts"].strip().replace("\n", ' ').replace("\t", ' ')]
+                        
+                headlines_attempt = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - )', row["texts"])
+                # Exclude headlines that contain '(dpa)' to understand if there are headlines
+                # that contain smth like '\nBerlin - '.
+                headlines_attempt = [h for h in headlines_attempt if '(dpa)' not in h]
                 
                 # If there is a headline that starts from .\n and ends with =
                 if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in row["texts"]) and \
@@ -530,9 +536,9 @@ def split_articles(multiple_articles):
                 # The case where the number of paragraphs is larger than 
                 # the number of DPA references, the number of DPA references 
                 # is larger than 1, and there are paragraphs that start from
-                # smth like '\nBerlin - ' (and not '\nBerlin (dpa)') 
+                # smth like '\nBerlin - ' (and not '\nBerlin (dpa)')
                 elif len(mult_art) > len(dpa_ref) and len(dpa_ref) > 1 and \
-                    len([r.strip() for r in re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - )', row["texts"]) if r.strip() != '']) > 0:
+                    len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0:
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
                     headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4}))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', row['texts'])
