@@ -49,7 +49,8 @@ def split_articles(multiple_articles):
         "zulegte.1": "zulegte.",
         "lassen.e": "lassen.",
         "Sonderurlaub.e": "Sonderurlaub.",
-        "zeigen.t": "zeigen."}
+        "zeigen.t": "zeigen.",
+        "viel.a": "viel."}
         
         for typo, correction in typos_dic.items():
             row['texts'] = row['texts'].replace(typo, correction)  
