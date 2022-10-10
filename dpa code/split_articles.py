@@ -541,7 +541,7 @@ def split_articles(multiple_articles):
                     len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0:
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
-                    headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2}))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', row['texts'])
+                    headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
                     # A pattern to find the headlines that might include \n,
                     # but do not include \.
                     if len(headlines) < len(mult_art)/2:
