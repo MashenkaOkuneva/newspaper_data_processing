@@ -31,6 +31,10 @@ def split_articles(multiple_articles):
         if len(re.findall('\n\s+?\(Sperrfrist.+\)', row['texts'])) > 0:
             row['texts'] = re.sub('\n\s+?\(Sperrfrist.+\)','',row['texts'])
         
+        # Remove pictures references
+        if len(re.findall('\n\(mit dpa-Grafik.+\)\s=', row['texts'])) > 0:
+            row['texts'] = re.sub('\n\(mit dpa-Grafik.+\)\s=','',row['texts'])        
+        
         # Remove the docket number 
         if len(re.findall(r'\(Aktenzeichen.+\)', row['texts'])) > 0:
             row['texts'] = re.sub('\(Aktenzeichen.+\)','',row['texts'])            
@@ -555,8 +559,11 @@ def split_articles(multiple_articles):
                     
                     # A pattern to find the headlines following paragraphs without a period 
                     # at the end.
+                    headlines_try = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
+                    # Headlines that consist of one word are cities preceding the dpa reference.
+                    headlines_try = [h for h in headlines_try if len(h.split())>1]
                     if len(headlines) < len(mult_art)/2 or \
-                        len(headlines) < len(re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
+                        len(headlines) < len(headlines_try):
                         headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
                                                                     
                     if len(headlines) <= 1:
