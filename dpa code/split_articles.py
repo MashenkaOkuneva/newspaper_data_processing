@@ -58,9 +58,7 @@ def split_articles(multiple_articles):
         "ab.i": "ab.",
         "Bodenobjekten.e": "Bodenobjekten.",
         "seien.m": "seien.",
-        "Koalitionsgespräch.e": "Koalitionsgespräch.",
-        "BayWa und Co.": "BayWa und Co",
-        "Windeln.de": "WindelnPunktde"}
+        "Koalitionsgespräch.e": "Koalitionsgespräch."}
 
         for typo, correction in typos_dic.items():
             row['texts'] = row['texts'].replace(typo, correction)  
@@ -456,6 +454,7 @@ def split_articles(multiple_articles):
         else: 
             # Search for dpa references
             dpa_ref = re.findall(r'\(dpa.*?\)', row["texts"])
+            change_split_pattern = False
                         
             # If there is a dpa reference in the article
             if len(dpa_ref) >= 1:
@@ -543,22 +542,36 @@ def split_articles(multiple_articles):
                     len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0:
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
-                    headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
+                    headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
                     
                     headlines_try = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
                     # A pattern to find the headlines that might include \n,
                     # but do not include \.
                     if len(headlines) < len(mult_art)/2 or len(headlines) < len(headlines_try):
                         headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])                
-                    headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
-                                                                                
-                    # Replace headline with 'SEP'
-                    for ind, headline in enumerate(headlines):
-                        txt = txt.replace(headline, 'SEP', 1)
-                        headlines[ind] = ' '.join(headline.split())
                     
-                    # Split text by 'SEP' tokens
-                    mult_art = [i.strip() for i in txt.split('SEP')][1:]
+                    # If there are empty headlines
+                    elif len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0:
+                        change_split_pattern = True
+                        headlines =  re.findall(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', row["texts"].strip())
+                        row['texts'] = re.sub(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', ' SEP ', row['texts'].strip())  
+                        txt = row['texts']
+                        txt = txt.strip().replace("\n", ' ').replace("\t", ' ')
+                        
+                    headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
+                    
+                    # Case with empty headlines
+                    if change_split_pattern == True:
+                        # Split text by 'SEP' tokens    
+                        mult_art = [i.strip() for i in txt.split('SEP')][1:]
+                    else:                                                            
+                        # Replace headline with 'SEP'
+                        for ind, headline in enumerate(headlines):
+                            txt = txt.replace(headline, 'SEP', 1)
+                            headlines[ind] = ' '.join(headline.split())
+                        
+                        # Split text by 'SEP' tokens
+                        mult_art = [i.strip() for i in txt.split('SEP')][1:]
                     
                     # Combine headlines and texts into articles
                     mult_art = [headline + ' ' + art for headline, art in zip(headlines, mult_art)]                
@@ -612,7 +625,7 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^)[\S\s]+?(?=\(dpa.+?)', txt)
                     else:
                         # Search for headline preceding the DPA references
-                        headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa.+?)', txt)
+                        headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?:\(dpa.+?)', txt)
                         # Some headlines contain a period
                         if len(headlines) < len(dpa_ref):
                             headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
@@ -620,19 +633,9 @@ def split_articles(multiple_articles):
                             
                     if headlines != []:                       
                         # Replace headline with 'SEP'
-                        for ind, headline in enumerate(headlines):
-                            
-                            # Replace the headline 'Franfkfurt (dpa)' with 'SEP' instead of the city name 'Frankfurt' 
-                            if headline.strip() == 'Frankfurt':
-                                
-                                headline = 'Frankfurt (dpa)'
-                                txt = txt.replace(headline, 'SEP', 1)
-                                headlines[ind] = ' '.join(headline.split())
-                                
-                            else:
-                                
-                                txt = txt.replace(headline, 'SEP', 1)
-                                headlines[ind] = ' '.join(headline.split())
+                        for ind, headline in enumerate(headlines):                            
+                            txt = txt.replace(headline, 'SEP', 1)
+                            headlines[ind] = ' '.join(headline.split())
                             
                         # Split text by 'SEP' tokens
                         mult_art = [i.strip() for i in txt.split('SEP')][1:] 
