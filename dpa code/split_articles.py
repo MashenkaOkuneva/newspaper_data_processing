@@ -619,8 +619,18 @@ def split_articles(multiple_articles):
                     if headlines != []:                       
                         # Replace headline with 'SEP'
                         for ind, headline in enumerate(headlines):
-                            txt = txt.replace(headline, 'SEP', 1)
-                            headlines[ind] = ' '.join(headline.split())
+                            
+                            # Replace the headline 'Franfkfurt (dpa)' with 'SEP' instead of the city name 'Frankfurt' 
+                            if headline.strip() == 'Frankfurt':
+                                
+                                headline = 'Frankfurt (dpa)'
+                                txt = txt.replace(headline, 'SEP', 1)
+                                headlines[ind] = ' '.join(headline.split())
+                                
+                            else:
+                                
+                                txt = txt.replace(headline, 'SEP', 1)
+                                headlines[ind] = ' '.join(headline.split())
                             
                         # Split text by 'SEP' tokens
                         mult_art = [i.strip() for i in txt.split('SEP')][1:] 
