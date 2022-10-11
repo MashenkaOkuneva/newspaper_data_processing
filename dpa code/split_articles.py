@@ -59,7 +59,8 @@ def split_articles(multiple_articles):
         "Bodenobjekten.e": "Bodenobjekten.",
         "seien.m": "seien.",
         "Koalitionsgespräch.e": "Koalitionsgespräch.",
-        "BayWa und Co.": "BayWa und Co"}
+        "BayWa und Co.": "BayWa und Co",
+        "Windeln.de": "WindelnPunktde"}
 
         for typo, correction in typos_dic.items():
             row['texts'] = row['texts'].replace(typo, correction)  
