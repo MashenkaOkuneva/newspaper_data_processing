@@ -198,7 +198,12 @@ def dpa_load(folder):
                         p = p.strip()  # strip whitespace on both sides
                         p = p.replace("\n", ' ') # replace line break (new line character) with space 
                         p = p.replace("\t", ' ') # replace tab with space
-                    text_new = text_new + ' ' + p
+                    # If an artilce contains multiple articles, use the word 'PARAGRAPH'
+                    # to separate paragraphs for easier splitting.
+                    if all(s not in title for s in strings_ma) and all(s not in keywords_new for s in strings_ma) and all(s not in soup.find("genre").get_text() for s in strings_ma):    
+                        text_new = text_new + ' ' + p
+                    else:
+                        text_new = text_new + ' PARAGRAPH ' + p
                     # replace a non-breaking space with a space
                     text_new = re.sub('\xa0', ' ', text_new)
                     # remove soft-hyphen
