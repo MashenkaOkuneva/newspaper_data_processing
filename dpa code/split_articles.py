@@ -18,6 +18,10 @@ def split_articles(multiple_articles):
     
     for index, row in multiple_articles.iterrows():
         
+        # Text version with a 'PARAGRAPH' tag
+        txt_par = row["texts"]
+        row["texts"] = row["texts"].replace(' PARAGRAPH ', ' ')
+        
         mult_art = []
         
         no_headline = False
@@ -451,7 +455,7 @@ def split_articles(multiple_articles):
             
         # The second indication for multiple articles is the occurence of 
         # multiple dpa references. 
-        else: 
+        else:            
             # Search for dpa references
             dpa_ref = re.findall(r'\(dpa.*?\)', row["texts"])
             change_split_pattern = False
@@ -629,6 +633,12 @@ def split_articles(multiple_articles):
                         # Some headlines contain a period
                         if len(headlines) < len(dpa_ref):
                             headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
+                            # If the previous pattern did not help, then use
+                            # the version of the text with the 'PARAGRAPH' tag.
+                            # Search for smth like 'PARAGRAPH headline PARAGRAPH Bonn (dpa)' 
+                            if len(headlines) < len(dpa_ref):
+                                headlines = re.findall(r'(?<=PARAGRAPH)[^\n]+?(?:PARAGRAPH [A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                                headlines = [h.replace(" PARAGRAPH ", ' ') for h in headlines]
                             headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
