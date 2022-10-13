@@ -639,6 +639,10 @@ def split_articles(multiple_articles):
                             if len(headlines) < len(dpa_ref):
                                 headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                                 headlines = [h.replace(" PARAGRAPH ", ' ') for h in headlines]
+                                # If all the previous patterns did not work, allow for
+                                # some words with the period in the headline: '.com'
+                                if len(headlines) < len(dpa_ref):
+                                    headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1})|(?<=\.\s{2}))[^\.]+?(?:\.com)*[^\.]+?(?:\(dpa.+?)', txt)
                             headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
