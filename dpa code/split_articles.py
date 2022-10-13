@@ -641,7 +641,7 @@ def split_articles(multiple_articles):
                             # the version of the text with the 'PARAGRAPH' tag.
                             # Search for smth like 'PARAGRAPH headline PARAGRAPH Bonn (dpa)' 
                             if len(headlines) < len(dpa_ref):
-                                headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                                headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                                 headlines = [h.replace(" PARAGRAPH ", ' ') for h in headlines]
                                 # If all the previous patterns did not work, allow for
                                 # some words with the period in the headline: '.com'
