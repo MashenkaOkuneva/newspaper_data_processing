@@ -637,7 +637,7 @@ def split_articles(multiple_articles):
                             # the version of the text with the 'PARAGRAPH' tag.
                             # Search for smth like 'PARAGRAPH headline PARAGRAPH Bonn (dpa)' 
                             if len(headlines) < len(dpa_ref):
-                                headlines = re.findall(r'(?<=PARAGRAPH)[^\n]+?(?:PARAGRAPH [A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                                headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                                 headlines = [h.replace(" PARAGRAPH ", ' ') for h in headlines]
                             headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
