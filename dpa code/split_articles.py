@@ -46,6 +46,10 @@ def split_articles(multiple_articles):
         if ' bdt0055 3 pl 90  dpa 0062' in row['texts']:
             row['texts'] = row['texts'].replace(' bdt0055 3 pl 90  dpa 0062', '')
         
+        # By mistake, the same article contains two dpa references.
+        if 'Washington/Brüssel (dpa) - Berlin/Washington (dpa)' in row['texts']:
+            row['texts'] = row['texts'].replace('Washington/Brüssel (dpa) - Berlin/Washington (dpa)', 'Washington/Brüssel (dpa)')
+        
         # Remove metadata from the text
         if '\ndpa mhxfn022\nvv fnbf\nfnb 000\nNachrichtenüberblick/dpa/Vermischtes/\ndpa-Nachrichtenüberblick VERMISCHTES14.10.2002 - 05:00 Uhr =' in row['texts']:
             row['texts'] = row['texts'].replace('\ndpa mhxfn022\nvv fnbf\nfnb 000\nNachrichtenüberblick/dpa/Vermischtes/\ndpa-Nachrichtenüberblick VERMISCHTES14.10.2002 - 05:00 Uhr =', '')
