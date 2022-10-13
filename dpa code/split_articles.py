@@ -507,8 +507,8 @@ def split_articles(multiple_articles):
                     
                     # If there are not only headlines ending with =, but also
                     # headlines preceding '\nBerlin (dpa)'
-                    if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa.+?)', txt)) > len(headlines):
-                        headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.))[\S\s]+?(?=\(dpa.+?)', txt)
+                    if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?:\(dpa.+?)', txt)) > len(headlines):
+                        headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.))[\S\s]+?(?:\(dpa.+?)', txt)
                         
                     # A pattern to find the headlines following paragraphs without a period 
                     # at the end.
@@ -630,9 +630,9 @@ def split_articles(multiple_articles):
                     else:
                         # Search for headline preceding the DPA references
                         headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?:\(dpa.+?)', txt)
-                        # Some headlines contain a period
+                        # Some headlines contain a period                        
                         if len(headlines) < len(dpa_ref):
-                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
+                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())    
                             # If the previous pattern did not help, then use
                             # the version of the text with the 'PARAGRAPH' tag.
                             # Search for smth like 'PARAGRAPH headline PARAGRAPH Bonn (dpa)' 
@@ -643,7 +643,11 @@ def split_articles(multiple_articles):
                                 # some words with the period in the headline: '.com'
                                 if len(headlines) < len(dpa_ref):
                                     headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1})|(?<=\.\s{2}))[^\.]+?(?:\.com)*[^\.]+?(?:\(dpa.+?)', txt)
-                            headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
+                                    # In some cases, to identify the first headline, we only
+                                    # need to remove the first \n and keep the spaces.
+                                    if len(headlines) < len(dpa_ref):
+                                        headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].replace('\n', ' ', 1))
+                        headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
                         # Replace headline with 'SEP'
