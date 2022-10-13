@@ -632,7 +632,7 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?:\(dpa.+?)', txt)
                         # Some headlines contain a period
                         if len(headlines) < len(dpa_ref):
-                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
+                            headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?=\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
                             # If the previous pattern did not help, then use
                             # the version of the text with the 'PARAGRAPH' tag.
                             # Search for smth like 'PARAGRAPH headline PARAGRAPH Bonn (dpa)' 
