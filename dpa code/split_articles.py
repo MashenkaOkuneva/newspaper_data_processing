@@ -32,8 +32,8 @@ def split_articles(multiple_articles):
         if 'W I R T S C H A F T\n' in row['texts']:
             row['texts'] = row['texts'].replace('W I R T S C H A F T\n', '')
             
-        if len(re.findall('\n\s*?\(Sperrfrist.+\)', row['texts'])) > 0:
-            row['texts'] = re.sub('\n\s*?\(Sperrfrist.+\)','',row['texts'])
+        if len(re.findall('\n\s*?\({0,1}Sperrfrist.+\){0,1}', row['texts'])) > 0:
+            row['texts'] = re.sub('\n\s*?\({0,1}Sperrfrist.+\){0,1}','',row['texts'])
         
         # Remove pictures references
         if len(re.findall('\n\(mit dpa-Grafik.+\)\s=', row['texts'])) > 0:
