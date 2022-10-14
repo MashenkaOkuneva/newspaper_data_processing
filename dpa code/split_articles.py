@@ -506,7 +506,7 @@ def split_articles(multiple_articles):
                 # If there is a headline that starts from .\n and ends with =
                 if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in row["texts"]) and \
                     len(mult_art) != 1 and (len(mult_art) > len(dpa_ref)):
-                    headlines = re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])
+                    headlines = re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])   
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
                     # If there are not only headlines ending with =, but also
@@ -517,8 +517,8 @@ def split_articles(multiple_articles):
                     # A pattern to find the headlines following paragraphs without a period 
                     # at the end.
                     if len(headlines) < len(mult_art)/2 or \
-                    len(headlines) < len(re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
-                        headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
+                    len(headlines) < len(re.findall(r'(?:^|(?<=(?<!=\s{2})\s{2}))[^\( ][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
+                        headlines = re.findall(r'(?:^|(?<=(?<!=\s{2})\s{2}))[^\( ][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
                     
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
