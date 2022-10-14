@@ -41,8 +41,8 @@ def split_articles(multiple_articles):
         
         # Remove the docket number 
         if len(re.findall(r'\(Aktenzeichen.+\)', row['texts'])) > 0:
-            row['texts'] = re.sub('\(Aktenzeichen.+\)','',row['texts'])            
-        
+            row['texts'] = re.sub('\(Aktenzeichen.+\)','',row['texts'])  
+                    
         if ' bdt0055 3 pl 90  dpa 0062' in row['texts']:
             row['texts'] = row['texts'].replace(' bdt0055 3 pl 90  dpa 0062', '')
         
@@ -53,6 +53,10 @@ def split_articles(multiple_articles):
         # Remove metadata from the text
         if '\ndpa mhxfn022\nvv fnbf\nfnb 000\nNachrichtenüberblick/dpa/Vermischtes/\ndpa-Nachrichtenüberblick VERMISCHTES14.10.2002 - 05:00 Uhr =' in row['texts']:
             row['texts'] = row['texts'].replace('\ndpa mhxfn022\nvv fnbf\nfnb 000\nNachrichtenüberblick/dpa/Vermischtes/\ndpa-Nachrichtenüberblick VERMISCHTES14.10.2002 - 05:00 Uhr =', '')
+        
+        # Remove metadata from the text
+        if len(re.findall('(?:dpa ks\n){0,1}dpa-Nachrichtenüberblick[\S\s]+?(?:VERMISCHTES[\S\s]+?=\n|VERMISCHTES\n)',row['texts'])) > 0:
+            row['texts'] = re.sub('(?:dpa ks\n){0,1}dpa-Nachrichtenüberblick[\S\s]+?(?:VERMISCHTES[\S\s]+?=\n|VERMISCHTES\n)','',row['texts'])
         
         # Typos that lead to the wrong splitting
         typos_dic = {
