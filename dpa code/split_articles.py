@@ -32,8 +32,8 @@ def split_articles(multiple_articles):
         if 'W I R T S C H A F T\n' in row['texts']:
             row['texts'] = row['texts'].replace('W I R T S C H A F T\n', '')
             
-        if len(re.findall('\n\s*?\({0,1}Sperrfrist.+\){0,1}', row['texts'])) > 0:
-            row['texts'] = re.sub('\n\s*?\({0,1}Sperrfrist.+\){0,1}','',row['texts'])
+        if len(re.findall('\n{0,1}\s*?\({0,1}Sperrfrist.+\){0,1}', row['texts'])) > 0:
+            row['texts'] = re.sub('\n{0,1}\s*?\({0,1}Sperrfrist.+\){0,1}','',row['texts'])
         
         # Remove pictures references
         if len(re.findall('\n\(mit dpa-Grafik.+\)\s=', row['texts'])) > 0:
@@ -506,14 +506,19 @@ def split_articles(multiple_articles):
                 # If there is a headline that starts from .\n and ends with =
                 if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in row["texts"]) and \
                     len(mult_art) != 1 and (len(mult_art) > len(dpa_ref)):
-                    headlines = re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])   
+                    headlines = re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
                     # If there are not only headlines ending with =, but also
                     # headlines preceding '\nBerlin (dpa)'
                     if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?:\(dpa.+?)', txt)) > len(headlines):
                         headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.))[\S\s]+?(?:\(dpa.+?)', txt)
-                        
+                        # The case where headlines can be identified using the following pattern:
+                        # '.\n ... PARAGRAPH   Wiesbaden (dpa/vwd)'.
+                        if len(headlines)<len(dpa_ref):
+                            headlines = re.findall(r'(?:^|(?<=\.\n{1}))(?:(?!\.\n{1})[\s\S])+?(?:PARAGRAPH\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                            headlines = [h.replace(" PARAGRAPH ", ' ') for h in headlines]
+                            
                     # A pattern to find the headlines following paragraphs without a period 
                     # at the end.
                     if len(headlines) < len(mult_art)/2 or \
