@@ -518,7 +518,7 @@ def split_articles(multiple_articles):
                     if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?:\(dpa.+?)', txt)) > len(headlines):
                         headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.))[\S\s]+?(?:\(dpa.+?)', txt)
                         # The case where headlines can be identified using the following pattern:
-                        # '.\n ... PARAGRAPH   Wiesbaden (dpa/vwd)'.
+                        # '.\n|.\s (PARAGRAPH){0,1} ... (PARAGRAPH){0,1]   Wiesbaden (dpa/vwd)'.
                         if len(headlines)<len(dpa_ref):
                             headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1}))(?:(?!\.\n{1}|\. PARAGRAPH)[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                             headlines = [h for h in headlines if "PARAGRAPH" in h]
@@ -529,6 +529,12 @@ def split_articles(multiple_articles):
                     if len(headlines) < len(mult_art)/2 or \
                     len(headlines) < len(re.findall(r'(?:^|(?<=(?<!=\s{2})\s{2}))[^\( ][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)):
                         headlines = re.findall(r'(?:^|(?<=(?<!=\s{2})\s{2}))[^\( ][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
+                    
+                    # The case where headlines can be identified using the tag PARAGRAPH.
+                    if len(headlines)<len(dpa_ref):
+                        headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1}))(?:(?!\.\n{1}|\. PARAGRAPH)[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                        headlines = [h for h in headlines if "PARAGRAPH" in h]
+                        headlines = [h.replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
                     
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
