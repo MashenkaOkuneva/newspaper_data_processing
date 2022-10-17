@@ -520,7 +520,8 @@ def split_articles(multiple_articles):
                         # The case where headlines can be identified using the following pattern:
                         # '.\n ... PARAGRAPH   Wiesbaden (dpa/vwd)'.
                         if len(headlines)<len(dpa_ref):
-                            headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1}))(?:(?!\.\n{1}|\. PARAGRAPH)[\s\S])+?(?:PARAGRAPH\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                            headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1}))(?:(?!\.\n{1}|\. PARAGRAPH)[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                            headlines = [h for h in headlines if "PARAGRAPH" in h]
                             headlines = [h.replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
                             
                     # A pattern to find the headlines following paragraphs without a period 
