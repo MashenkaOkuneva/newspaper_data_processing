@@ -53,6 +53,10 @@ def split_articles(multiple_articles):
         # Remove metadata from the text
         if len(re.findall('(?:dpa ks\n){0,1}dpa-Nachrichtenüberblick[\S\s]+?(?:VERMISCHTES[\S\s]+?=\n|VERMISCHTES\n)',row['texts'])) > 0:
             row['texts'] = re.sub('(?:dpa ks\n){0,1}dpa-Nachrichtenüberblick[\S\s]+?(?:VERMISCHTES[\S\s]+?=\n|VERMISCHTES\n)','',row['texts'])
+            
+        # Remove dpa reference from the text
+        if '.dpa la' in row['texts']:
+            row['texts'] = row['texts'].replace('.dpa la', '.')
         
         # Typos that lead to the wrong splitting
         typos_dic = {
