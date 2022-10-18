@@ -532,7 +532,7 @@ def split_articles(multiple_articles):
                     
                     # The case where headlines can be identified using the tag PARAGRAPH.
                     if len(headlines)<len(dpa_ref):
-                        headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1}))(?:(?!\.\n{1}|\. PARAGRAPH)[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                        headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1})|(?<=\.\)\n{1}))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                         headlines = [h for h in headlines if "PARAGRAPH" in h]
                         headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
                     
@@ -649,7 +649,7 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^)[\S\s]+?(?=\(dpa.+?)', txt)
                     else:
                         # Search for headline preceding the DPA references
-                        headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?:\(dpa.+?)', txt)
+                        headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1})|(?<=\.\)\s{1}))[^\.]+?(?:\(dpa.+?)', txt)
                         # Some headlines contain a period                        
                         if len(headlines) < len(dpa_ref):
                             headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())    
