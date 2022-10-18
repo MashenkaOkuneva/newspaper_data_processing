@@ -17,11 +17,7 @@ def split_articles(multiple_articles):
     multiple_articles.reset_index(inplace = True, drop = True)
     
     for index, row in multiple_articles.iterrows():
-        
-        # Text version with a 'PARAGRAPH' tag
-        txt_par = row["texts"]
-        row["texts"] = row["texts"].replace(' PARAGRAPH ', ' ')
-        
+                
         mult_art = []
         
         no_headline = False
@@ -81,6 +77,10 @@ def split_articles(multiple_articles):
         if any(st in row['title'] for st in ['Analysten-Einstufungen', 'ANALYSTEN-EINSTUFUNGEN']):
             for day in weekday:
                 row['texts'] = row['texts'].replace(day, '')
+                
+        # Text version with a 'PARAGRAPH' tag
+        txt_par = row["texts"]
+        row["texts"] = row["texts"].replace(' PARAGRAPH ', ' ')
             
         # Capitalized words at the beginning of the paragraph.
         capital_words1 = re.findall(r'(?:\s{2,})[/A-ZÄÖÜß]{4,}\b', row["texts"])
@@ -534,7 +534,7 @@ def split_articles(multiple_articles):
                     if len(headlines)<len(dpa_ref):
                         headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1}))(?:(?!\.\n{1}|\. PARAGRAPH)[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                         headlines = [h for h in headlines if "PARAGRAPH" in h]
-                        headlines = [h.replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
+                        headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
                     
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
                     
