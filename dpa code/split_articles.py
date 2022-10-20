@@ -59,17 +59,9 @@ def split_articles(multiple_articles):
             row['texts'] = row['texts'].replace('.dpa la', '.')
             
         # Remove metadata from the text 
-        if len(re.findall(r'\(dpa-Umfrage\)\n', row['texts'])) > 0:
-            row['texts'] = re.sub('\(dpa-Umfrage\)\n','',row['texts']) 
-            
-        # Remove metadata from the text 
-        if len(re.findall(r'\(dpa-Grafik.+\)\n', row['texts'])) > 0:
-            row['texts'] = re.sub('\(dpa-Grafik.+\)\n','',row['texts']) 
-            
-        # Remove metadata from the text 
-        if len(re.findall(r'\(Bilder.+\)\n|\(dpa-Bild.+\)\n', row['texts'])) > 0:
-            row['texts'] = re.sub('\(Bilder.+\)\n|\(dpa-Bild.+\)\n','',row['texts']) 
-        
+        if len(re.findall(r"""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n""", row['texts'])) > 0:
+            row['texts'] = re.sub("""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n""",'',row['texts']) 
+                    
         # Typos that lead to the wrong splitting
         typos_dic = {
         "seien.,": "seien.",
@@ -617,10 +609,9 @@ def split_articles(multiple_articles):
                     mult_art = [headline + ' ' + art for headline, art in zip(headlines, mult_art)]                
                                        
                 # The case where the number of paragraphs is larger than 
-                # the number of DPA references and the number of DPA references 
-                # is larger than 1 requires a different pattern for splitting the
-                # articles
-                elif len(mult_art) > len(dpa_ref) and len(dpa_ref) > 1:
+                # the number of DPA references requires a different pattern
+                # for splitting the articles
+                elif len(mult_art) > len(dpa_ref):
                                      
                     # Search for headline preceding the DPA references
                     headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2}(?![a-zäöüß]))|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
