@@ -57,6 +57,10 @@ def split_articles(multiple_articles):
         # Remove dpa reference from the text
         if '.dpa la' in row['texts']:
             row['texts'] = row['texts'].replace('.dpa la', '.')
+            
+        # Remove metadata from the text 
+        if len(re.findall(r'\(dpa-Umfrage\)\n', row['texts'])) > 0:
+            row['texts'] = re.sub('\(dpa-Umfrage\)\n','',row['texts']) 
         
         # Typos that lead to the wrong splitting
         typos_dic = {
