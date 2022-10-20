@@ -610,8 +610,9 @@ def split_articles(multiple_articles):
                 # is larger than 1 requires a different pattern for splitting the
                 # articles
                 elif len(mult_art) > len(dpa_ref) and len(dpa_ref) > 1:
+                                     
                     # Search for headline preceding the DPA references
-                    headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
+                    headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2}(?![a-zäöüß]))|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
                     
                     # A pattern to find the headlines following paragraphs without a period 
                     # at the end.
