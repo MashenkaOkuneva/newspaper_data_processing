@@ -621,7 +621,7 @@ def split_articles(multiple_articles):
                     headlines_try = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
                     # Headlines that consist of one word are cities preceding the dpa reference.
                     headlines_try = [h for h in headlines_try if len(h.split())>1]
-                    if len(headlines) < len(mult_art)/2 or \
+                    if (len(headlines) < len(mult_art)/2 and len(headlines) < len(dpa_ref)) or \
                         len(headlines) < len(headlines_try):
                         headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
                                                                     
