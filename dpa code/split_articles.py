@@ -564,10 +564,9 @@ def split_articles(multiple_articles):
                     mult_art = [headline + ' ' + art for headline, art in zip(headlines, mult_art)]
                     
                 # The case where the number of paragraphs is larger than 
-                # the number of DPA references, the number of DPA references 
-                # is larger than 1, and there are paragraphs that start from
-                # smth like '\nBerlin - ' (and not '\nBerlin (dpa)')
-                elif len(mult_art) > len(dpa_ref) and len(dpa_ref) > 1 and \
+                # the number of DPA references, and there are paragraphs that 
+                # start from smth like '\nBerlin - ' (and not '\nBerlin (dpa)')
+                elif len(mult_art) > len(dpa_ref) and \
                     len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0:
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
