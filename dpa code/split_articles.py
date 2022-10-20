@@ -59,8 +59,8 @@ def split_articles(multiple_articles):
             row['texts'] = row['texts'].replace('.dpa la', '.')
             
         # Remove metadata from the text 
-        if len(re.findall(r"""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n""", row['texts'])) > 0:
-            row['texts'] = re.sub("""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n""",'',row['texts']) 
+        if len(re.findall(r"""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n|\ndpa yyzz kfAuto[\S\s]+$""", row['texts'])) > 0:
+            row['texts'] = re.sub("""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n|\ndpa yyzz kfAuto[\S\s]+$""",'',row['texts']) 
                     
         # Typos that lead to the wrong splitting
         typos_dic = {
