@@ -576,11 +576,11 @@ def split_articles(multiple_articles):
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
                     headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
                     
-                    headlines_try = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
+                    headlines_try = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
                     # A pattern to find the headlines that might include \n,
                     # but do not include \.
                     if len(headlines) < len(mult_art)/2 or len(headlines) < len(headlines_try):
-                        headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])                
+                        headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])                
                     
                     # If there are empty headlines
                     elif len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0:
