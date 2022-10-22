@@ -28,8 +28,8 @@ def split_articles(multiple_articles):
         if 'W I R T S C H A F T\n' in row['texts']:
             row['texts'] = row['texts'].replace('W I R T S C H A F T\n', '')
             
-        if len(re.findall('\n{0,1}\s*?\({0,1}Sperrf{0,1}rist.+\){0,1}', row['texts'])) > 0:
-            row['texts'] = re.sub('\n{0,1}\s*?\({0,1}Sperrf{0,1}rist.+\){0,1}','',row['texts'])
+        if len(re.findall('(?<=PARAGRAPH)\n{0,1}\s*?\({0,1}Sperrf{0,1}rist.+\){0,1}', row['texts'])) > 0:
+            row['texts'] = re.sub('(?<=PARAGRAPH)\n{0,1}\s*?\({0,1}Sperrf{0,1}rist.+\){0,1}','',row['texts'])
         
         # Remove pictures references
         if len(re.findall('\n\(mit dpa-Grafik.+\)\s=', row['texts'])) > 0:
@@ -575,11 +575,14 @@ def split_articles(multiple_articles):
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
                     headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
-                    
+                    # Identify headlines using the 'PARAGRAPH' tag
+                    headlines_par = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1})|(?<=\.\)\n{1}))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|PARAGRAPH[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ -)', txt_par)
                     headlines_try = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
                     # A pattern to find the headlines that might include \n,
                     # but do not include \.
-                    if len(headlines) < len(mult_art)/2 or len(headlines) < len(headlines_try):
+                    if len(headlines) < len(mult_art)/2 or \
+                        (len(headlines) < len(headlines_try) and len(headlines) < len(headlines_par) and len(re.findall('PARAGRAPH', txt_par))>1) or \
+                            (len(headlines) < len(headlines_try) and len(re.findall('PARAGRAPH', txt_par))==1):
                         headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])                
                     
                     # If there are empty headlines
