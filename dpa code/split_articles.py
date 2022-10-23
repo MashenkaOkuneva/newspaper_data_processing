@@ -36,8 +36,8 @@ def split_articles(multiple_articles):
             row['texts'] = re.sub('\n\(mit dpa-Grafik.+\)\s=','',row['texts'])        
         
         # Remove the docket number 
-        if len(re.findall(r'\(Aktenzeichen.+\)', row['texts'])) > 0:
-            row['texts'] = re.sub('\(Aktenzeichen.+\)','',row['texts'])  
+        if len(re.findall(r'\(Aktenzeichen.+\)|\(Az\.:.+\)', row['texts'])) > 0:
+            row['texts'] = re.sub('\(Aktenzeichen.+\)|\(Az\.:.+\)','',row['texts'])  
                     
         if ' bdt0055 3 pl 90  dpa 0062' in row['texts']:
             row['texts'] = row['texts'].replace(' bdt0055 3 pl 90  dpa 0062', '')
@@ -67,7 +67,7 @@ def split_articles(multiple_articles):
             row['texts'] = re.sub(r'\n*\s*dpa yyzz ra[\s\S]+$','',row['texts'])
             
         # Remove internal information
-        if len(re.findall(r'\n*# dpa-Notizblock[\s\S]+$', row['texts'])) > 0:
+        if len(re.findall(r'\n*# dpa-Notizblock[\s\S]+$|\n*# Notizblock[\s\S]+$', row['texts'])) > 0:
             row['texts'] = re.sub(r'\n*# dpa-Notizblock[\s\S]+$','',row['texts'])       
                     
         # Typos that lead to the wrong splitting
@@ -700,7 +700,7 @@ def split_articles(multiple_articles):
                                         # try to find headlines that start from \.\s{2}.
                                         # A headline might contain a period.
                                         if len(headlines) < len(dpa_ref):
-                                            headlines =  re.findall(r'(?:^|(?<=\.\s{2}))[\s\S]+?(?:\(dpa.+?)', txt)                                           
+                                            headlines =  re.findall(r'(?:^|(?<=\.\s{2})|(?<=\?»\s{2}))[\s\S]+?(?:\(dpa.+?)', txt)                                           
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
