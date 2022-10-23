@@ -580,24 +580,27 @@ def split_articles(multiple_articles):
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
                     headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
+                    headlines = [h for h in headlines if h.strip()!='']
                     # Identify headlines using the 'PARAGRAPH' tag
                     headlines_par = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1})|(?<=\.\)\n{1}))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|PARAGRAPH[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ -)', txt_par)
                     headlines_try = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])
+                    headlines_try = [h for h in headlines_try if h.strip()!='']
                     # A pattern to find the headlines that might include \n,
                     # but do not include \.
                     if len(headlines) < len(mult_art)/2 or \
                         (len(headlines) < len(headlines_try) and len(headlines) < len(headlines_par) and len(re.findall('PARAGRAPH', txt_par))>1) or \
                             (len(headlines) < len(headlines_try) and len(re.findall('PARAGRAPH', txt_par))==1):
                         headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])                
-                    
+                        headlines = [h for h in headlines if h.strip()!='']
+                        
                     # If there are empty headlines
                     # Use the 'PARAGRAPH' tag to make sure that the first headline
                     # pattern has failed.
                     elif (len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0 and len(headlines) != len(headlines_par) and len(re.findall('PARAGRAPH', txt_par))>1) or \
                         (len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0 and len(re.findall('PARAGRAPH', txt_par))==1):
                         change_split_pattern = True
-                        headlines =  re.findall(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', row["texts"].strip())
-                        row['texts'] = re.sub(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', ' SEP ', row['texts'].strip())  
+                        headlines =  re.findall(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - )', row["texts"].strip())
+                        row['texts'] = re.sub(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - )', ' SEP ', row['texts'].strip())  
                         txt = row['texts']
                         txt = txt.strip().replace("\n", ' ').replace("\t", ' ')
                         
