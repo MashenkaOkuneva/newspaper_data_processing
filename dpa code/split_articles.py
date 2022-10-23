@@ -577,7 +577,7 @@ def split_articles(multiple_articles):
                 # start from smth like '\nBerlin - ' (and not '\nBerlin (dpa)')
                 elif len(mult_art) > len(dpa_ref) and \
                     len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0 and \
-                        '(dpa-AFX)' not in dpa_ref:
+                        dpa_ref != ['(dpa-AFX)']:
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
                     headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
@@ -626,7 +626,7 @@ def split_articles(multiple_articles):
                 # The case where the number of paragraphs is larger than 
                 # the number of DPA references requires a different pattern
                 # for splitting the articles
-                elif len(mult_art) > len(dpa_ref) and '(dpa-AFX)' not in dpa_ref:
+                elif len(mult_art) > len(dpa_ref) and dpa_ref != ['(dpa-AFX)']:
                                      
                     # Search for headline preceding the DPA references
                     headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2}(?![a-zäöüß]))|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
@@ -697,11 +697,11 @@ def split_articles(multiple_articles):
                     if headlines != []:                       
                         # Replace headline with 'SEP'
                         for ind, headline in enumerate(headlines):                            
-                            txt = txt.replace(headline, 'SEP', 1)
+                            txt = txt.replace(headline, 'SEPARATE', 1)
                             headlines[ind] = ' '.join(headline.split())
                             
                         # Split text by 'SEP' tokens
-                        mult_art = [i.strip() for i in txt.split('SEP')][1:] 
+                        mult_art = [i.strip() for i in txt.split('SEPARATE')][1:] 
                     else:
                         headlines = ['']
                                         
