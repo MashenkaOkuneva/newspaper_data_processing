@@ -697,10 +697,14 @@ def split_articles(multiple_articles):
                                     if len(headlines) < len(dpa_ref):
                                         headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].replace('\n', ' ', 1))
                                         # If all the previous patterns did not work,
-                                        # try to find headlines that start from \.\s{2}.
+                                        # try to find headlines that start from \.\s{2} or \?»\s{2}.
                                         # A headline might contain a period.
                                         if len(headlines) < len(dpa_ref):
-                                            headlines =  re.findall(r'(?:^|(?<=\.\s{2})|(?<=\?»\s{2}))[\s\S]+?(?:\(dpa.+?)', txt)                                           
+                                            headlines =  re.findall(r'(?:^|(?<=\.\s{2})|(?<=\?»\s{2}))[\s\S]+?(?:\(dpa.+?)', txt) 
+                                            # Only if all the previous patterns did not work,
+                                            # try to find the headlines that start from \s{2}.
+                                            if len(headlines) < len(dpa_ref):
+                                                headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\?»\s{2})|(?<=\s{2}))[A-ZÄÖÜ][\s\S]+?(?:\(dpa.+?)', txt)                       
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
