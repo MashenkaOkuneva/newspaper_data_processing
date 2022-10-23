@@ -704,7 +704,13 @@ def split_articles(multiple_articles):
                                             # Only if all the previous patterns did not work,
                                             # try to find the headlines that start from \s{2}.
                                             if len(headlines) < len(dpa_ref):
-                                                headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\?»\s{2})|(?<=\s{2}))[A-ZÄÖÜ][\s\S]+?(?:\(dpa.+?)', txt)                       
+                                                headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\?»\s{2})|(?<=\s{2}))[A-ZÄÖÜ][\s\S]+?(?:\(dpa.+?)', txt)
+                        # A headline that conists of two words (e.g., 'Berlin (dpa)') might indicate
+                        # a mistake in splitting. Use a 'PARAGRAPH' tag to identify the headlines.
+                        if len(headlines) == len(dpa_ref) and len([h for h in headlines if len(h.split()) == 2])>0 and \
+                            len(re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßúè\.\-\' /]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)) == len(headlines):
+                            headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßúè\.\-\' /]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                            headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
