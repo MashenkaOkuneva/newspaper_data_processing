@@ -509,7 +509,7 @@ def split_articles(multiple_articles):
                     # Remove this title
                     row["texts"] = row["texts"].replace(title1, '')
                     # Try to find the second title
-                    title2 = re.findall(r'(?<=\.\n|\.\s)(?:[A-ZÄÖÜß\n])[^.]+?[=]{0,1}(?:\n{2})', row["texts"])
+                    title2 = re.findall(r'(?<=\.\n|\.\s)(?:[A-ZÄÖÜß\n])[^.]+?(?:[0-9]\.){0,1}[^.]+?[=]{0,1}(?:\n{2})', row["texts"])
                     if title2 != []:
                         title2 = title2[0]
                         headlines = ['', title2]
@@ -526,7 +526,7 @@ def split_articles(multiple_articles):
                 headlines_attempt = [h for h in headlines_attempt if '(dpa)' not in h]
                 
                 # If there is a headline that starts from .\n and ends with =
-                if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in row["texts"]) and \
+                if (len(re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])) > 0) and ('Kurznachrichten/Wirtschaft' not in txt_par) and \
                     len(mult_art) != 1 and (len(mult_art) > len(dpa_ref)):
                     headlines = re.findall(r'(?:^[ ]*|(?<=\.\n)[ ]*)(?:[A-ZÄÖÜßa-z\n])[^.]+?(?:=)', row['texts'])
                     headlines = [h.replace("\n", ' ').replace("\t", ' ').replace("dpa ak", " ").strip() for h in headlines]
@@ -672,7 +672,7 @@ def split_articles(multiple_articles):
                     mult_art = [headline + ' ' + art for headline, art in zip(headlines, mult_art)]
                 # Another regular expression is required to split an article 
                 # into headlines and paragraphs
-                elif mult_art == [] or len(mult_art) == 1 or len(mult_art)<=len(dpa_ref):
+                elif (mult_art == [] or len(mult_art) == 1 or len(mult_art)<=len(dpa_ref)) and ('Kurznachrichten/Wirtschaft' not in txt_par):
                     # Special pattern for texts with one dpa reference
                     if len(dpa_ref) == 1 and title1 == '':
                         headlines = re.findall(r'(?:^)[\S\s]+?(?=\(dpa.+?)', txt)
