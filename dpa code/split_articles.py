@@ -64,7 +64,11 @@ def split_articles(multiple_articles):
 
         # Remove metadata from the text 
         if len(re.findall(r'\n*\s*dpa yyzz ra[\s\S]+$', row['texts'])) > 0:
-            row['texts'] = re.sub(r'\n*\s*dpa yyzz ra[\s\S]+$','',row['texts'])         
+            row['texts'] = re.sub(r'\n*\s*dpa yyzz ra[\s\S]+$','',row['texts'])
+            
+        # Remove internal information
+        if len(re.findall(r'\n*# dpa-Notizblock[\s\S]+$', row['texts'])) > 0:
+            row['texts'] = re.sub(r'\n*# dpa-Notizblock[\s\S]+$','',row['texts'])       
                     
         # Typos that lead to the wrong splitting
         typos_dic = {
@@ -692,6 +696,11 @@ def split_articles(multiple_articles):
                                     # need to remove the first \n and keep the spaces.
                                     if len(headlines) < len(dpa_ref):
                                         headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].replace('\n', ' ', 1))
+                                        # If all the previous patterns did not work,
+                                        # try to find headlines that start from \.\s{2}.
+                                        # A headline might contain a period.
+                                        if len(headlines) < len(dpa_ref):
+                                            headlines =  re.findall(r'(?:^|(?<=\.\s{2}))[\s\S]+?(?:\(dpa.+?)', txt)                                           
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
