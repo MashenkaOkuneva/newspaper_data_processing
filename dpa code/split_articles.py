@@ -61,6 +61,10 @@ def split_articles(multiple_articles):
         # Remove metadata from the text 
         if len(re.findall(r"""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n|\ndpa yyzz kfAuto[\S\s]+$""", row['texts'])) > 0:
             row['texts'] = re.sub("""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n|\ndpa yyzz kfAuto[\S\s]+$""",'',row['texts']) 
+
+        # Remove metadata from the text 
+        if len(re.findall(r'\n*\s*dpa yyzz ra[\s\S]+$', row['texts'])) > 0:
+            row['texts'] = re.sub(r'\n*\s*dpa yyzz ra[\s\S]+$','',row['texts'])         
                     
         # Typos that lead to the wrong splitting
         typos_dic = {
