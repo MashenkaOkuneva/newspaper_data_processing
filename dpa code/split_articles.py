@@ -587,7 +587,10 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n)|(?<=\.\s{1}))[^\.]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - [A-ZÄÖÜ]|\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+ [-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'])                
                     
                     # If there are empty headlines
-                    elif len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0:
+                    # Use the 'PARAGRAPH' tag to make sure that the first headline
+                    # pattern has failed.
+                    elif (len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0 and len(headlines) != len(headlines_par) and len(re.findall('PARAGRAPH', txt_par))>1) or \
+                        (len(re.findall(r'(?<=\.\n{2})\s{1,}.+?\(dpa\) - ', row['texts'])) > 0 and len(re.findall('PARAGRAPH', txt_par))==1):
                         change_split_pattern = True
                         headlines =  re.findall(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', row["texts"].strip())
                         row['texts'] = re.sub(r'(?:^|(?<=\.\n{2})).+?(?=\n{0,2}\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', ' SEP ', row['texts'].strip())  
