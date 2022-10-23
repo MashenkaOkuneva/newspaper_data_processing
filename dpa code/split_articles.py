@@ -576,7 +576,8 @@ def split_articles(multiple_articles):
                 # the number of DPA references, and there are paragraphs that 
                 # start from smth like '\nBerlin - ' (and not '\nBerlin (dpa)')
                 elif len(mult_art) > len(dpa_ref) and \
-                    len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0:
+                    len([r.strip() for r in headlines_attempt if r.strip() != '']) > 0 and \
+                        '(dpa-AFX)' not in dpa_ref:
                     
                     # Headlines preceding '\nBerlin - ' and '\nBerlin (dpa)'
                     headlines = re.findall(r'(?:^|(?<=\.\n{1}\s)|(?<=\.\n{2})|(?<=»\n{1}\s)|(?<=wolle\.\n{1})|(?<=\.\s{4})|(?<=\.\s{2})|(?<=\.»\n)|(?<=\.\n))[^\n]+?(?=\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß /]+ - |\n[\s]*?[A-ZÄÖÜß][A-ZÄÖÜa-zäöüß\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
@@ -625,7 +626,7 @@ def split_articles(multiple_articles):
                 # The case where the number of paragraphs is larger than 
                 # the number of DPA references requires a different pattern
                 # for splitting the articles
-                elif len(mult_art) > len(dpa_ref):
+                elif len(mult_art) > len(dpa_ref) and '(dpa-AFX)' not in dpa_ref:
                                      
                     # Search for headline preceding the DPA references
                     headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2}(?![a-zäöüß]))|(?<=Maschinenbauers\s{2}))[\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
