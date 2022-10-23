@@ -622,11 +622,13 @@ def split_articles(multiple_articles):
                     # A pattern to find the headlines following paragraphs without a period 
                     # at the end.
                     headlines_try = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
-                    # Headlines that consist of one word are cities preceding the dpa reference.
-                    headlines_try = [h for h in headlines_try if len(h.split())>1]
+                    # Headlines that consist of one word are cities preceding the dpa reference;
+                    # a headline consisting of 40 words and more indicates a mistake in splitting.
+                    headlines_try = [h for h in headlines_try if len(h.split())>1 and len(h.split())<40]
                     if (len(headlines) < len(mult_art)/2 and len(headlines) < len(dpa_ref)) or \
                         len(headlines) < len(headlines_try):
                         headlines = re.findall(r'(?:^|(?<=\s{2}))[^\(][\S\s]+?(?=\(dpa(?!\-Grafik).+?)', txt)
+                        headlines = [h for h in headlines if len(h.split())>1 and len(h.split())<40]
                                                                     
                     if len(headlines) <= 1:
                         # Headlines that start from .\s and end with dpa reference
