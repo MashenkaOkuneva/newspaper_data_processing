@@ -752,6 +752,11 @@ def split_articles(multiple_articles):
                         if len(headlines_length)<len(headlines) and \
                             len(re.findall(r'(?:^|(?<=\.\n{2})|(?<=\. \n{2})|(?<=\.» \n{2})|(?<=\n{2}))[^\n]+?(?:\n{2}.+?\(dpa.+?)',row['texts'].strip())) == len(dpa_ref):
                             headlines = re.findall(r'(?:^|(?<=\.\n{2})|(?<=\. \n{2})|(?<=\.» \n{2})|(?<=\n{2}))[^\n]+?(?:\n{2}.+?\(dpa.+?)', row['texts'].strip())                        
+                        # If some of the headlines contain a period,
+                        # use the 'PARAGRAPH' tag to identify the headlines.
+                        if len(re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßúè\.\-\' /]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)) == len(headlines):
+                            headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßúè\.\-\' /]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par) 
+                            headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
