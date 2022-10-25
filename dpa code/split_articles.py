@@ -666,6 +666,11 @@ def split_articles(multiple_articles):
                     if len(headlines_length)<len(headlines) and len(re.findall('PARAGRAPH', txt_par))>1:
                         headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1})|(?<=\.\)\n{1}))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                         headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ').strip() for h in headlines]
+                        # If one of the texts does not end with the punctuation mark,
+                        # another pattern is required to identify the headlines.
+                        if len([h for h in headlines if len(h.split())<30])<len(headlines):
+                            headlines = re.findall(r'(?:PARAGRAPH)(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                            headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ').strip() for h in headlines]
                     
                     # A headline consisting of 30 words and more indicates a mistake in splitting,
                     # try to use the pattern where headlines start from .\s and end with the dpa reference
