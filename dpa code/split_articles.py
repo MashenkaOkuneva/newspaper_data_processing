@@ -660,9 +660,9 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?(?<!Agentur )\(dpa.+?|\s{4}.+?(?<!Agentur )\(dpa.+?)', row['texts'].strip())
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                     
-                    # A headline consisting of 30 words and more indicates a mistake in splitting,
+                    # A headline consisting of 20 words and more indicates a mistake in splitting,
                     # use the 'PARAGRAPH' tag to identify the headlines.
-                    headlines_length = [h for h in headlines if len(h.split())<30]
+                    headlines_length = [h for h in headlines if len(h.split())<20]
                     if len(headlines_length)<len(headlines) and len(re.findall('PARAGRAPH', txt_par))>1:
                         headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1})|(?<=\.\)\n{1}))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                         headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ').strip() for h in headlines]
@@ -672,7 +672,7 @@ def split_articles(multiple_articles):
                             headlines = re.findall(r'(?:PARAGRAPH|(?<=\.\n\s))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                             headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ').strip() for h in headlines]
                     
-                    # A headline consisting of 30 words and more indicates a mistake in splitting,
+                    # A headline consisting of 20 words and more indicates a mistake in splitting,
                     # try to use the pattern where headlines start from .\s and end with the dpa reference
                     # (no period inside a headline is allowed).
                     if len(headlines_length)<len(headlines) and len(re.findall('PARAGRAPH', txt_par))==1:
