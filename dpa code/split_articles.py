@@ -666,7 +666,13 @@ def split_articles(multiple_articles):
                     if len(headlines_length)<len(headlines) and len(re.findall('PARAGRAPH', txt_par))>1:
                         headlines = re.findall(r'(?:^|(?<=\.\n{1})|(?<=\.\s{1})|(?<=\.\)\n{1}))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                         headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ').strip() for h in headlines]
-                        
+                    
+                    # A headline consisting of 30 words and more indicates a mistake in splitting,
+                    # try to use the pattern where headlines start from .\s and end with the dpa reference
+                    # (no period inside a headline is allowed).
+                    if len(headlines_length)<len(headlines) and len(re.findall('PARAGRAPH', txt_par))==1:
+                        headlines =re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa(?!\)\.|\) [a-z]).+?)', txt)
+                       
                     # Replace headline with 'SEP'
                     for ind, headline in enumerate(headlines):
                         txt = txt.replace(headline, 'SEP', 1)
