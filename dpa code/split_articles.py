@@ -533,8 +533,8 @@ def split_articles(multiple_articles):
                     
                     # If there are not only headlines ending with =, but also
                     # headlines preceding '\nBerlin (dpa)'
-                    if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2}))[\S\s]+?(?:\(dpa.+?)', txt)) > len(headlines):
-                        headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.))[\S\s]+?(?:\(dpa.+?)', txt)
+                    if len(re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=\!\»\s{2}))[\S\s]+?(?:\(dpa.+?)', txt)) > len(headlines):
+                        headlines = re.findall(r'(?:^|(?<=\.\s{2})|(?<=\.»\s{2})|(?<=(?<!dpa)\)\s{2})|(?<=Maschinenbauers\s{2})|(?<=Serbenrepublik\.)|(?<=\!\»\s{2}))[\S\s]+?(?:\(dpa.+?)', txt)
                         # The case where headlines can be identified using the following pattern:
                         # '.\n|.\s (PARAGRAPH){0,1} ... (PARAGRAPH){0,1]   Wiesbaden (dpa/vwd)'.
                         if len(headlines)<len(dpa_ref):
