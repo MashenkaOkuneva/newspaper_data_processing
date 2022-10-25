@@ -672,6 +672,10 @@ def split_articles(multiple_articles):
                     # (no period inside a headline is allowed).
                     if len(headlines_length)<len(headlines) and len(re.findall('PARAGRAPH', txt_par))==1:
                         headlines =re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa(?!\)\.|\) [a-z]).+?)', txt)
+                        # If the previous pattern did not work, try to find headlines
+                        # separated by four spaces.
+                        if len(headlines)<len(re.findall(r'(?:^|(?<=\.\s{4})|(?<=\.»\s{4}))[\S\s]+?(?=\s{4})', txt)):
+                            headlines = re.findall(r'(?:^|(?<=\.\s{4})|(?<=\.»\s{4}))[\S\s]+?(?=\s{4})', txt)
                        
                     # Replace headline with 'SEP'
                     for ind, headline in enumerate(headlines):
