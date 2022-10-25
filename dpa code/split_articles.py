@@ -745,6 +745,13 @@ def split_articles(multiple_articles):
                         # (dpa) is not preceded by Deutsche Presse-Agentur                 
                         if len(headlines) == len(dpa_ref) and len(re.findall(r'(?<=Agentur\n|Agentur\s)(?:\(dpa.*?\))', row['texts']))>0:
                             headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1})|(?<=\.\)\s{1}))[^\.]+?(?:(?<!Agentur )\(dpa.+?)', txt)
+                        # A headline consisting of 20 words and more indicates a mistake in splitting,
+                        # try a pattern where a headline starts from \n{2} and ends
+                        # with \n{2}.
+                        headlines_length = [h for h in headlines if len(h.split())<20] 
+                        if len(headlines_length)<len(headlines) and \
+                            len(re.findall(r'(?:^|(?<=\.\n{2})|(?<=\. \n{2})|(?<=\.» \n{2})|(?<=\n{2}))[^\n]+?(?:\n{2}.+?\(dpa.+?)',row['texts'].strip())) == len(dpa_ref):
+                            headlines = re.findall(r'(?:^|(?<=\.\n{2})|(?<=\. \n{2})|(?<=\.» \n{2})|(?<=\n{2}))[^\n]+?(?:\n{2}.+?\(dpa.+?)', row['texts'].strip())                        
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
