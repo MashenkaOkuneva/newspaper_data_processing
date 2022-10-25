@@ -68,7 +68,7 @@ def split_articles(multiple_articles):
             
         # Remove internal information
         if len(re.findall(r'\n*# dpa-Notizblock[\s\S]+$|\n*# Notizblock[\s\S]+$', row['texts'])) > 0:
-            row['texts'] = re.sub(r'\n*# dpa-Notizblock[\s\S]+$','',row['texts'])       
+            row['texts'] = re.sub(r'\n*# dpa-Notizblock[\s\S]+$|\n*# Notizblock[\s\S]+$','',row['texts'])       
                     
         # Typos that lead to the wrong splitting
         typos_dic = {
@@ -676,10 +676,15 @@ def split_articles(multiple_articles):
                         # separated by four spaces.
                         if len(headlines)<len(re.findall(r'(?:^|(?<=\.\s{4})|(?<=\.»\s{4}))[\S\s]+?(?=\s{4})', txt)):
                             headlines = re.findall(r'(?:^|(?<=\.\s{4})|(?<=\.»\s{4}))[\S\s]+?(?=\s{4})', txt)
-                            if len(headlines)<len(re.findall(r'(?:^|(?<=\.\n{4}))[^\n]+?(?:\n{2})', row['texts'].strip())):
-                                headlines = re.findall(r'(?:^|(?<=\.\n{4}))[^\n]+?(?:\n{2})', row['texts'].strip())
-                                headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
-                       
+                        # A headline might start from \.\n{4} and end with \n{2}.
+                        if len(headlines)<len(re.findall(r'(?:^|(?<=\.\n{4}))[^\n]+?(?:\n{2})', row['texts'].strip())):
+                            headlines = re.findall(r'(?:^|(?<=\.\n{4}))[^\n]+?(?:\n{2})', row['texts'].strip())
+                            headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
+                        # A headline might start from \.\n{2} and end with \n{2}.
+                        if len(headlines)<len(re.findall(r'(?:^|(?<=\.\n{2})|(?<=\. \n{2})|(?<=\.» \n{2}))[^\n]+?(?:\n{2}.+?\(dpa.+?)', row['texts'].strip())):
+                            headlines = re.findall(r'(?:^|(?<=\.\n{2})|(?<=\. \n{2})|(?<=\.» \n{2}))[^\n]+?(?:\n{2}.+?\(dpa.+?)', row['texts'].strip())
+                            headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
+                                                   
                     # Replace headline with 'SEP'
                     for ind, headline in enumerate(headlines):
                         txt = txt.replace(headline, 'SEP', 1)
