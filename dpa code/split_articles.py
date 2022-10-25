@@ -656,8 +656,8 @@ def split_articles(multiple_articles):
                         headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1}))[^\.]+?(?=\(dpa(?!\)\.|\) [a-z]).+?)', txt)
                     
                     # If one of the headlines starts from .\s and another one contains a period.
-                    if len(headlines) < len(re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())):
-                        headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?\(dpa.+?|\s{4}.+?\(dpa.+?)', row['texts'].strip())
+                    if len(headlines) < len(re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?(?<!Agentur )\(dpa.+?|\s{4}.+?(?<!Agentur )\(dpa.+?)', row['texts'].strip())):
+                        headlines = re.findall(r'(?:^|(?<=\.\n)|(?<=\?\n)|(?<=\.»\n)|(?<=\.\s{2}))[^\n]+?(?:\n.+?(?<!Agentur )\(dpa.+?|\s{4}.+?(?<!Agentur )\(dpa.+?)', row['texts'].strip())
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                     
                     # A headline consisting of 30 words and more indicates a mistake in splitting,
