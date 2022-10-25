@@ -63,8 +63,8 @@ def split_articles(multiple_articles):
             row['texts'] = re.sub("""\(dpa-Umfrage\)\n|\(dpa-Grafik.+\)\n|\(Bilder.+\)\n|\(dpa-Bild.+\)\n|\ndpa yyzz kfAuto[\S\s]+$""",'',row['texts']) 
 
         # Remove metadata from the text 
-        if len(re.findall(r'\n*\s*dpa yyzz ra[\s\S]+$', row['texts'])) > 0:
-            row['texts'] = re.sub(r'\n*\s*dpa yyzz ra[\s\S]+$','',row['texts'])
+        if len(re.findall(r'\n*\s*dpa yyzz ra[\s\S]+$|\n*\s*dpa gra yyzz n1 gra[\s\S]+$', row['texts'])) > 0:
+            row['texts'] = re.sub(r'\n*\s*dpa yyzz ra[\s\S]+$|\n*\s*dpa gra yyzz n1 gra[\s\S]+$','',row['texts'])
             
         # Remove internal information
         if len(re.findall(r'\n*# dpa-Notizblock[\s\S]+$|\n*# Notizblock[\s\S]+$', row['texts'])) > 0:
@@ -676,6 +676,9 @@ def split_articles(multiple_articles):
                         # separated by four spaces.
                         if len(headlines)<len(re.findall(r'(?:^|(?<=\.\s{4})|(?<=\.»\s{4}))[\S\s]+?(?=\s{4})', txt)):
                             headlines = re.findall(r'(?:^|(?<=\.\s{4})|(?<=\.»\s{4}))[\S\s]+?(?=\s{4})', txt)
+                            if len(headlines)<len(re.findall(r'(?:^|(?<=\.\n{4}))[^\n]+?(?:\n{2})', row['texts'].strip())):
+                                headlines = re.findall(r'(?:^|(?<=\.\n{4}))[^\n]+?(?:\n{2})', row['texts'].strip())
+                                headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                        
                     # Replace headline with 'SEP'
                     for ind, headline in enumerate(headlines):
