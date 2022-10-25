@@ -669,7 +669,7 @@ def split_articles(multiple_articles):
                         # If one of the texts does not end with the punctuation mark,
                         # another pattern is required to identify the headlines.
                         if len([h for h in headlines if len(h.split())<30])<len(headlines):
-                            headlines = re.findall(r'(?:PARAGRAPH)(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
+                            headlines = re.findall(r'(?:PARAGRAPH|(?<=\.\n\s))(?:(?!\.\n{1}|\. PARAGRAPH|\.\)\n{1})[\s\S])+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßú\.\-\' /\(\)]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                             headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ').strip() for h in headlines]
                     
                     # A headline consisting of 30 words and more indicates a mistake in splitting,
