@@ -718,6 +718,10 @@ def split_articles(multiple_articles):
                             len(re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßúè\.\-\' /]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)) == len(headlines):
                             headlines = re.findall(r'(?<=PARAGRAPH)[\S\s]+?(?:PARAGRAPH){0,1}(?:\s*\n*\s*[A-ZÄÖÜß][A-ZÄÖÜa-zäöüßúè\.\-\' /]+[ ]{0,1}[-]{0,1}\(dpa.+?)', txt_par)
                             headlines = [h.replace("\n", ' ').replace(" PARAGRAPH ", ' ').replace("PARAGRAPH ", ' ') for h in headlines]
+                        # If a text contains more than one dpa-reference, make sure that
+                        # (dpa) is not preceded by Deutsche Presse-Agentur                 
+                        if len(headlines) == len(dpa_ref) and len(re.findall(r'(?<=Agentur\n|Agentur\s)(?:\(dpa.*?\))', row['texts']))>0:
+                            headlines = re.findall(r'(?:^|(?<=\.\s{1})|(?<=\?\s{1})|(?<=\.»\s{1})|(?<=\.\)\s{1}))[^\.]+?(?:(?<!Agentur )\(dpa.+?)', txt)
                         headlines = [h.replace("\n", ' ').replace("\t", ' ').strip() for h in headlines]
                             
                     if headlines != []:                       
