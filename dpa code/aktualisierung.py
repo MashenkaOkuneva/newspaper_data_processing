@@ -25,7 +25,7 @@ def delete_aktualisierung_index(data):
         title = re.sub('\((.*?)Aktualisierung(.*?)\)', '', title,1).strip()
       
         # check if title exists and is not part of "dpa-Vorausmeldungen"
-        if (len(title) > 1 and ('dpa-Vorausmeldungen kompakt: Das bringt der Tag.' and 'dpa-Vorausmeldung kompakt: Das bringt der Tag.') not in title):
+        if (len(title) > 1 and all(s not in title for s in ['dpa-Vorausmeldungen kompakt: Das bringt der Tag.', 'dpa-Vorausmeldung kompakt: Das bringt der Tag.'])):
             
             # select all articles with same title
             akt_title = data[data['title'].str.contains(title, na = False, regex = False)]
