@@ -30,7 +30,7 @@ def Berichtigung_pairs(inputs):
     column5 = []
     for title in inputs[4]:
         # If the title of the corrected article contains the title we consider
-        if title in inputs[3] and title != inputs[3] and title != '':
+        if title in inputs[3] and title != inputs[3] and len(title) > 1:
             column1.append(inputs[2])
             column2.append(inputs[1])
             column3.append(inputs[0])

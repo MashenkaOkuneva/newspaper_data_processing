@@ -9,7 +9,7 @@ from langdetect import detect
 
 eng = None
 
-def identify_eng_2(text):
+def identify_eng(text):
     try:
         detect(text)
         if detect(text) == 'en':
