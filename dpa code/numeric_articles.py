@@ -6,7 +6,7 @@ Created on Sun May 16 21:26:31 2021
 """
 import re
 
-def numeric_articles(text, word_count, tr = 0.75):
+def numeric_articles(text, word_count, tr = 0.5):
     """ 
     This function determines if a text consists mostly of numbers.
     

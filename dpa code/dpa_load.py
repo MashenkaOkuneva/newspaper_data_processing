@@ -29,6 +29,7 @@ def dpa_load(folder):
     wordcount = []  # word count from the XML files
     topic = []  # topic: Finance vs Economy and Politics (afx vs dpa)
                 # (same as source, but based on the folder where the files are stored)
+    par_list = []
     
     # for each file in a particular folder   
     for s in [s for s in os.listdir(folder)]:
@@ -184,7 +185,8 @@ def dpa_load(folder):
                         paragraphs = [soup.find("text")]
                     except:
                         paragraphs = ''
-                        
+                
+                par_list_text = []
                 # clean the paragraphs
                 for p in paragraphs:
                     # replace all the line breaks with space
@@ -211,7 +213,9 @@ def dpa_load(folder):
                     # pre-process further only if an article does not contain multiple articles
                     if all(s not in title for s in strings_ma) and all(s not in keywords_new for s in strings_ma) and all(s not in soup.find("genre").get_text() for s in strings_ma): 
                         text_new = ' '.join(text_new.split()) # make sure that there are no extra white spaces
+                    par_list_text.append(p)
             texts.append(text_new)
+            par_list.append(par_list_text)
               
     data = pd.DataFrame({'texts' : texts,
                      'file': file_names,
@@ -225,7 +229,8 @@ def dpa_load(folder):
                      'city':city,
                      'genre':genre,
                      'wordcount':wordcount,
-                     'topic':topic
+                     'topic':topic,
+                     'paragraphs': par_list 
           })
     return data        
     
