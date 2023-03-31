@@ -7,3 +7,4 @@ __pycache__/
 *.csv
 *.conll09
 *.pickle
+*.xlsx
