@@ -9,49 +9,48 @@ import pandas as pd
 from tqdm import tqdm
 import re
 
-data = pd.read_csv('D:\Studium\PhD\Media Tenor\Results\Code neu\dpa_step1_testing.csv')
-mult_art = data[data['title'].str.contains('(?:zwei|drei|drei|vier|fünf|sechs) Teile', na = False)]
 
 def multi_part_art(mult_art, data):
+    
     '''
-    This function identifies texts which are split over multiple articles and 
-    merges them together to single articles.
+    This function identifies texts that are split across multiple articles and 
+    merges them together into single articles.
 
     '''
-    
     def cont_art(title_fol, mult_art, delete_index, data, ty):    
         
         '''
         This function searches for follow-up articles based on a given title
-        and returns text of the follow-up articles for further use.
+        and returns the text of the follow-up article for further use.
         
         Parameters
         ----------
         title_fol : string or None
-            Title which is used to identify the following article
+            Title used to identify the following article.
         mult_art : DataFrame
-            Dataframe of articles which are potentially split up into smaller articles
+            Dataframe of articles, where each article is potentially a part of a larger article,
+            and its continuation is in another article.
         delete_index : list
-            Indices of articles which can be deleted from main corpus. The function
-            adds the indices of the selected start and follow up articles.
+            Indices of articles that can be deleted from the main corpus. The function
+            adds the indices of the selected starting and follow-up articles.
         data : DataFrame
-            Main Corpus
+            Main corpus.
         ty : string
-            Either "Type 1" or "Type 2". "Type 1" are articles where the last sentence is the 
-            beginning of the next article. "Type 2" are articles with the same main headline.
+            Either "Type 1" or "Type 2". "Type 1" refers to articles where the last sentence is the 
+            beginning of the next article. "Type 2" refers to articles with the same main headline.
 
         Returns
         -------
         text_fol : string
-            Text from the following article. The text
+            Text from the following article. This text
             can be added to the text of the starting article.
         delete_index : list
-            Indices of articles which can be deleted from the main corpus. 
+            Indices of articles that can be deleted from the main corpus. 
         title_fol : string or None
-            Title which can can be used to identify the next follow-up article in line.
+            Title that can be used to identify the next follow-up article in line.
             
         '''
-          
+        
         if len(title_fol) > 1:
             
             # Select all potential follow-up articles based on the title.
@@ -61,23 +60,25 @@ def multi_part_art(mult_art, data):
                 
                 if len(article_fol) > 1:
                 
-                    # Get dates of all potential follow-up articles.
+                    # Obtain the dates of all potential follow-up articles.
                     date_fol = article_fol[['year', 'month', 'day']]
                     
-                    # Get indices of all follow-up articles with the same date
+                    # Retrieve the indices of all follow-up articles having the same date
                     # as the first article.
                     idx_fol = date_fol[(date_fol == date).all(1)]
                     
                     if not date_fol[(date_fol == date).all(1)].empty:
                         
                         if ty == "Type 1":
-                            
+                                                        
                             idx_fol = idx_fol.index[0]
+                            
+                            article_fol = article_fol.loc[idx_fol].to_frame().T
                     
                             text_fol = article_fol['texts'].iloc[0].replace(title_fol, '')
                                 
-                            # Get title for the next following article from the last sentence
-                            # of the article currently selected. 
+                            # Obtain the title for the subsequent article from the last sentence
+                            # of the currently selected article. 
                             title_fol = re.search('Folgt (.{,75}?)$',text_fol)
                             
                             if title_fol is not None:
@@ -101,7 +102,13 @@ def multi_part_art(mult_art, data):
                                             
                 else:
                     
-                    text_fol = article_fol['texts'].iloc[0].replace(title_fol, '')
+                    if ty == "Type 1":
+                        
+                        text_fol = article_fol['texts'].iloc[0].replace(title_fol, '')
+                        
+                    elif ty == "Type 2":
+                        
+                        text_fol = article_fol['texts'].iloc[0]
                                   
                     title_fol = re.search('Folgt (.{,75}?)$',text_fol)
                     
@@ -116,18 +123,23 @@ def multi_part_art(mult_art, data):
                 elif ty == "Type 2":
                     
                     delete_index.extend(list(article_fol.index))
-                
+                     
             else:
                 
                 title_fol = None
-                text_fol = '' 
+                text_fol = ''
+                
+        else:
+            
+            title_fol = None
+            text_fol = ''
             
         return(text_fol, delete_index, title_fol)
 
     delete_index = []
     articles_final = pd.DataFrame()
     
-    for idx, title in tqdm(enumerate(mult_art['title'])):   
+    for idx, title in tqdm(enumerate(mult_art['title'])):
         
         if not mult_art.index[idx] in delete_index:
         
@@ -137,8 +149,9 @@ def multi_part_art(mult_art, data):
             
             delete_index.append(mult_art.index[idx])
             
-            # If the last sentence of the article begins with "Folgt", it can be 
-            # used as a title to identify the following article.
+            # If the last sentence of an article begins with "Folgt", it can be 
+            # used as the title to identify the subsequent article, which is the
+            # continuation of the current article.
             title_fol = re.search('[Ff]olgt (.{,75}?)(?:\)|$|(?: # dpa-Notizblock)|(?:\())',text)
             
             if title_fol is not None:
@@ -150,15 +163,14 @@ def multi_part_art(mult_art, data):
                 
             elif title_fol is None:
                 
-                # If the title of the articles includes "Teil (number) - (number) Teile"
-                # (part (number) - (number) parts) the title can be used to identify 
-                # all articles which belong together.
+                # If the title of the article contains "... - number Teile",
+                # the title can be used to identify all articles that belong together.
                 
                 ty = "Type 2"
                 
                 try:
                     
-                    title_fol = re.search('(- \w+ Teile)(.*)', title).groups(0)[1]
+                    title_fol = re.search('(- \w+ Teile\){0,1})(.*)', title).groups(0)[1]
                                    
                 except:
                     
@@ -166,7 +178,7 @@ def multi_part_art(mult_art, data):
             
             if ty == "Type 1":
             
-                # Identfiy the followign article and add its text to the text of the starting article.
+                # Identfiy the subsequent article and add its text to the text of the starting article.
                 # Repeat this step until the last article is reached.
                 while title_fol is not None:
                     
@@ -180,8 +192,9 @@ def multi_part_art(mult_art, data):
                 
             article.loc['texts'] = text
             
-            articles_final = articles_final.append(article)
-         
+            articles_final = pd.concat([articles_final, article.to_frame().T])
+            
+                 
     delete_index = list(set(delete_index))    
     
     return(delete_index, articles_final)
