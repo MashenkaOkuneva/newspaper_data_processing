@@ -12,10 +12,16 @@ def clean_dpa_references(text):
     This function removes all dpa references from a string
     """
 
-    text = re.sub('''[A-ZÄÖÜß]{,50}\s\(dpa\)\s-\s|
-       |[A-ZÄÖÜß]{,50}\s\(dpa/vwd\)\s-\s|[A-ZÄÖÜß]{,50}\s\(dpa/tk\)\s-\s|[A-ZÄÖÜß]{,50}\s\(dpa-AFX\)\s-\s|
-       |[A-ZÄÖÜß]{,50}\s\(dpa/tk\)\s-\s|[A-ZÄÖÜß]{,50}\s\(dpa-AFX/APA\)\s-\s|[A-ZÄÖÜß]{,50}\s\(euro adhoc\)\s-\s|
-       |[A-ZÄÖÜß]{,50}\s\(ots\)\s-\s|[A-ZÄÖÜß]{,50}\s\(dpa-AFX Broker\)\s-\s|
-       |[A-ZÄÖÜß]{,50}\s\(AFX-CH\)\s-\s|[A-ZÄÖÜß]{,50}\s\(AFX\)\s-\s''', '', text)    
+    text = re.sub('''\s\(dpa\)\s-\s|
+       |\s\(dpa/vwd\)\s-\s|
+       |\s\(dpa/tk\)\s-\s|
+       |\s\(dpa-AFX\)\s-\s|
+       |\s\(dpa/tk\)\s-\s|
+       |\s\(dpa-AFX/APA\)\s-\s|
+       |\s\(euro adhoc\)\s-\s|
+       |\s\(ots\)\s-\s|
+       |\s\(dpa-AFX Broker\)\s-\s|
+       |\s\(AFX-CH\)\s-\s|
+       |\s\(AFX\)\s-\s''', ' ', text)    
     
     return(text)
