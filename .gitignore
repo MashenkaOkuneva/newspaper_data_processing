@@ -1,4 +1,5 @@
 nltk_data/
+truecaser-master/
 
 .ipynb_checkpoints
 __pycache__/
