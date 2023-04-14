@@ -9,3 +9,4 @@ __pycache__/
 *.conll09
 *.pickle
 *.xlsx
+*.pyc
