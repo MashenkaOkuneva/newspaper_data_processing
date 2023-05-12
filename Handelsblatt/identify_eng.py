@@ -10,6 +10,9 @@ from langdetect import detect
 eng = None
 
 def identify_eng(text):
+    
+    '''This function determines if a given text is written in English.'''
+    
     try:
         detect(text)
         if detect(text) == 'en':
