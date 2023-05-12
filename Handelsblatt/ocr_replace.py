@@ -9,6 +9,10 @@ import re
 
 def ocr_replace(text):
     
+    '''This function corrects specific OCR errors in a given text 
+    by identifying and replacing instances where the letter 'O' or 'o' 
+    is incorrectly recognized instead of the digit '0'.'''
+    
     # empty dictionary for tokens I want to change
     replace_dic = dict()
     
