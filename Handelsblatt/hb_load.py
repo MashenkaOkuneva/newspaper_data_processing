@@ -13,9 +13,10 @@ import pandas as pd
 import os
 import re
 
-# This is a function which will load Handelsblatt data from one folder.
 
 def hb_load(folder):
+    
+    '''This is a function which will load Handelsblatt data from one folder.'''
     
     data = None
     
