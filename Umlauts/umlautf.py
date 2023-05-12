@@ -72,7 +72,7 @@ class spell():
                 # check the token only if it contains an umlaut replacement
                 if any(urepl in t for urepl in [u'ae', u'oe', u'ue', u'ss', u'AE', u'OE', u'UE']):
                     # proceed if the token does not contain any special character
-                    if not any(s in t for s in [u'\xbc', u'\xa7', u'\xe1', u'\xa3', u'\xb1']):
+                    if not any(s in t for s in [u'\xbc', u'\xa7', u'\xe1', u'\xa3', u'\xb1', u'\u0130']):
                         if spellchecker.spell(t) == False: # if spelling is wrong
                             # create a list of suggestions, keep suggestions with umlauts only
                             suggest = [su for su in spellchecker.suggest(t) if any(um in su for um in ["\xe4", "\xf6", "\xfc", "\xdf", "\xc4", "\xd6", "\xdc"])] 
@@ -173,6 +173,8 @@ class spell():
             self.docs = self.docs.replace(u"``", u' " ')
             # replace "''" with ' " '.
             self.docs = self.docs.replace(u"''", u' " ')
+            # replace "\u0130noenue" with the correct representation of the name "İnönü".
+            self.docs = self.docs.replace(u"\u0130noenue", u"İnönü")
             # make sure that there are no extra white spaces
             self.docs = ' '.join(self.docs.split())
         return self.docs
