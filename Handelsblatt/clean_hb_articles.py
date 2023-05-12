@@ -28,7 +28,7 @@ def clean_hb_articles(text):
         
     # Remove unnecessary terms from the text with regular expressions and keep
     # information about the source
-    text = re.sub("""# dpa-Notizblock.{20,}""", "dpa", text)
+    text = re.sub("""# dpa-Notizblock.{20,}""", " dpa", text)
     
     # Remove unnecessary terms from the text with regular expressions 
     # including groups
