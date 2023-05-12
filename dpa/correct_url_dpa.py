@@ -16,7 +16,7 @@ def correct_url_dpa(text):
     # Define a list of patterns and their replacements
     # 1: Change "wertet.der" to "wertet. der"
     # 2: Change "{any_digit}.dezember" to "{any_digit}. dezember"
-    # 3: Change "{any_word}....de" to "{any_word}. de"
+    # 3: Change "{any_word}....de" to "{any_word} de"
     # 4: Change "...de" to " de"
     patterns = [
         (r'([A-ZÄÖÜ]?[a-zäöüß]+)\.(der|denn)', r'\1. \2'),
@@ -49,8 +49,7 @@ def correct_url_dpa(text):
     |\(Spenden\: [^)]+\)|
     |\(Programm\: [^)]+\)|
     |\(Die Umfrage im Internet\: [^)]+\)|
-    |(?:\(Adresse\: |
-    |\(Internet-Adresse\: )(?:\S+\.com)(?:[^)]*?\))|
+    |(?:\(Adresse\: |\(Internet-Adresse\: )(?:\S+\.com)(?:[^)]*?\))|
     |\S+\.html|
     |\S+\.de[^. ]*(?:\.pdf)?|
     |\S+\.org[^. ]*|

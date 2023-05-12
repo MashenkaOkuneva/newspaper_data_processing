@@ -1,0 +1,17 @@
+﻿%
+Ressort: Meinungsseite
+Ressort: Meinungsseite      Rubrik: Aufmacher
+Ressort: Meinungsseite      Rubrik: Bilanzbericht
+Ressort: Meinungsseite      Rubrik: Blick in die Presse
+Ressort: Meinungsseite      Rubrik: Carolin Emcke
+Ressort: Meinungsseite      Rubrik: Editorial
+Ressort: Meinungsseite      Rubrik: Gerichtsurteil
+Ressort: Meinungsseite      Rubrik: Im Profil
+Ressort: Meinungsseite      Rubrik: Karikatur
+Ressort: Meinungsseite      Rubrik: Kolumne
+Ressort: Meinungsseite      Rubrik: Kommentar
+Ressort: Meinungsseite      Rubrik: Leitartikel
+Ressort: Meinungsseite      Rubrik: Meine Presseschau
+Ressort: Meinungsseite      Rubrik: Portrait
+Ressort: Meinungsseite      Rubrik: Prozessbericht
+%

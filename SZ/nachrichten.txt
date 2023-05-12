@@ -1,0 +1,19 @@
+﻿%
+Ressort: Nachrichten
+Ressort: Nachrichten      Rubrik: Aktuelles Lexikon
+Ressort: Nachrichten      Rubrik: Aufmacher
+Ressort: Nachrichten      Rubrik: Chronik
+Ressort: Nachrichten      Rubrik: Editorial
+Ressort: Nachrichten      Rubrik: Gespräch
+Ressort: Nachrichten      Rubrik: Interview
+Ressort: Nachrichten      Rubrik: Kasten
+Ressort: Nachrichten      Rubrik: Kommentar
+Ressort: Nachrichten      Rubrik: Kurz gemeldet
+Ressort: Nachrichten      Rubrik: Personalien
+Ressort: Nachrichten      Rubrik: SZ-Wochenchronik
+Ressort: Nachrichten      Rubrik: Serie
+Ressort: Nachrichten      Rubrik: Streiflicht
+Ressort: Nachrichten      Rubrik: Thema des Tages
+Ressort: Nachrichten      Rubrik: Themenkasten
+Ressort: Nachrichten      Rubrik: Wochenchronik
+%

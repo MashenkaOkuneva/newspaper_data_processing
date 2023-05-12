@@ -1,0 +1,38 @@
+﻿%
+Ressort: Geld
+Ressort: Geld      Rubrik: Abgerechnet
+Ressort: Geld      Rubrik: Bei uns in
+Ressort: Geld      Rubrik: Bilanzbericht
+Ressort: Geld      Rubrik: Chronik
+Ressort: Geld      Rubrik: Der Monatsblick auf die Märkte
+Ressort: Geld      Rubrik: Die andere Seite
+Ressort: Geld      Rubrik: Fahrbericht
+Ressort: Geld      Rubrik: Filmkritik
+Ressort: Geld      Rubrik: Gerichtsurteil
+Ressort: Geld      Rubrik: Gespräch
+Ressort: Geld      Rubrik: Grafik
+Ressort: Geld      Rubrik: Hintergrund
+Ressort: Geld      Rubrik: Interview
+Ressort: Geld      Rubrik: Karikatur
+Ressort: Geld      Rubrik: Kommentar
+Ressort: Geld      Rubrik: Nachruf
+Ressort: Geld      Rubrik: Personalien
+Ressort: Geld      Rubrik: Politbarometer
+Ressort: Geld      Rubrik: Portrait
+Ressort: Geld      Rubrik: Produkttest
+Ressort: Geld      Rubrik: Prozessbericht
+Ressort: Geld      Rubrik: Reden wir über
+Ressort: Geld      Rubrik: Reportage
+Ressort: Geld      Rubrik: Schwarzes Brett
+Ressort: Geld      Rubrik: Serie
+Ressort: Geld      Rubrik: Tabelle
+Ressort: Geld      Rubrik: Tagungsbericht
+Ressort: Geld      Rubrik: Theaterkritik
+Ressort: Geld      Rubrik: Themenkasten
+Ressort: Geld      Rubrik: Wochenschau
+Ressort: Geld      Rubrik: Zitat
+Ressort: Wirtschaft /Geld
+Ressort: Wirtschaft /Geld      Rubrik: Grafik
+Ressort: Wirtschaft /Geld      Rubrik: Interview
+Ressort: Wirtschaft /Geld      Rubrik: Serie
+%

@@ -1,0 +1,85 @@
+﻿%
+Politik
+Ressort: Außenpolitik
+Ressort: Außenpolitik      Rubrik: Chronik
+Ressort: Außenpolitik      Rubrik: Grafik
+Ressort: Außenpolitik      Rubrik: Hintergrund
+Ressort: Außenpolitik      Rubrik: Interview
+Ressort: Außenpolitik      Rubrik: Portrait
+Ressort: Außenpolitik      Rubrik: SZ-Interview
+Ressort: Außenpolitik      Rubrik: Serie
+Ressort: Außenpolitik      Rubrik: Tabelle
+Ressort: Innenpolitik
+Ressort: POlitik
+Ressort: Politik
+Ressort: Politik       Rubrik: A.d. Ländern
+Ressort: Politik       Rubrik: A.d. ländern
+Ressort: Politik       Rubrik: Aufmacher
+Ressort: Politik       Rubrik: Blick
+Ressort: Politik       Rubrik: Chronik
+Ressort: Politik       Rubrik: Editorial
+Ressort: Politik       Rubrik: Interview
+Ressort: Politik       Rubrik: Kasten
+Ressort: Politik       Rubrik: Kommentar
+Ressort: Politik       Rubrik: Kurz gemeld.
+Ressort: Politik       Rubrik: Leitartikel
+Ressort: Politik       Rubrik: Personalien
+Ressort: Politik       Rubrik: SZ - Chronik
+Ressort: Politik       Rubrik: SZ-Chronik
+Ressort: Politik       Rubrik: SZ-Gespräch
+Ressort: Politik       Rubrik: SZ-Interview
+Ressort: Politik       Rubrik: SZ-chronik
+Ressort: Politik       Rubrik: Serie
+Ressort: Politik       Rubrik: Streiflicht
+Ressort: Politik       Rubrik: Themenkasten
+Ressort: Politik       Rubrik: ZDF-Politba.
+Ressort: Politik       Rubrik: kurz gemeld.
+Ressort: Politik      Rubrik: Aktuelle Kritik
+Ressort: Politik      Rubrik: Aktuelles Lexikon
+Ressort: Politik      Rubrik: Aufmacher
+Ressort: Politik      Rubrik: Außenansicht
+Ressort: Politik      Rubrik: Bilanzbericht
+Ressort: Politik      Rubrik: Buchkritik
+Ressort: Politik      Rubrik: Chronik
+Ressort: Politik      Rubrik: Editorial
+Ressort: Politik      Rubrik: Gerichtsurteil
+Ressort: Politik      Rubrik: Gespräch
+Ressort: Politik      Rubrik: Grafik
+Ressort: Politik      Rubrik: Hauptsatz
+Ressort: Politik      Rubrik: High-Tech
+Ressort: Politik      Rubrik: Hintergrund
+Ressort: Politik      Rubrik: Hochschule aktuell
+Ressort: Politik      Rubrik: Im Profil
+Ressort: Politik      Rubrik: Interview
+Ressort: Politik      Rubrik: Karikatur
+Ressort: Politik      Rubrik: Kasten
+Ressort: Politik      Rubrik: Kolumne
+Ressort: Politik      Rubrik: Kommentar
+Ressort: Politik      Rubrik: Kostprobe
+Ressort: Politik      Rubrik: Kurz gemeldet
+Ressort: Politik      Rubrik: Leitartikel
+Ressort: Politik      Rubrik: Nachruf
+Ressort: Politik      Rubrik: Personalien
+Ressort: Politik      Rubrik: Politbarometer
+Ressort: Politik      Rubrik: Portrait
+Ressort: Politik      Rubrik: Prozessbericht
+Ressort: Politik      Rubrik: Reisebericht
+Ressort: Politik      Rubrik: Reportage
+Ressort: Politik      Rubrik: Rätsel der Woche
+Ressort: Politik      Rubrik: SZ-Gespräch
+Ressort: Politik      Rubrik: SZ-Interview
+Ressort: Politik      Rubrik: SZ-Wochenchronik
+Ressort: Politik      Rubrik: Schwarzes Brett
+Ressort: Politik      Rubrik: Serie
+Ressort: Politik      Rubrik: Stilkritik
+Ressort: Politik      Rubrik: Streiflicht
+Ressort: Politik      Rubrik: Tabelle
+Ressort: Politik      Rubrik: Tagungsbericht
+Ressort: Politik      Rubrik: Themenkasten
+Ressort: Politik      Rubrik: ZDF-Politbarometer
+Ressort: Politik      Rubrik: Zitat
+Ressort: Politik      Rubrik: Zwischen den Zahlen
+Ressort: politik
+Ressort: politik       Rubrik: Streiflicht
+Ressort: politik       Rubrik: Themenkasten
+%

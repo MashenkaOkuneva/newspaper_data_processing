@@ -413,6 +413,7 @@ def clean_tables(text):
     |Die zehn Bestplatzierten des BTI.{0,}|
     |(?:Die Sitzverteilung\:)(?:.+?)(?=Damit kommt)|
     |(?:Damit werden die Mandate)(?:.+?)(?=Nach diesem)|
-    |(?:Die Veranstalter zählten in Berlin)(?:.+?)(?=\«Wir haben)""", " ", text)
+    |(?:Die Veranstalter zählten in Berlin)(?:.+?)(?=\«Wir haben)|
+    |Liste der Spender\:.{0,}""", " ", text)
     
     return(text)
