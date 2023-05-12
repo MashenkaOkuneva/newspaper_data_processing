@@ -15,7 +15,8 @@ import pandas as pd
 
 def fuzzy_duplicates_test(inputs):
     """ 
-    This function returns the indices of duplicated articles.
+    This function returns a DataFrame containing information about 
+    the duplicate articles, such as the texts, indices, and similarity scores.
     """ 
     # Select a new dataframe corresponding to a particular month and year.
     documents = inputs[2][(inputs[2]['year'] == inputs[0]) & (inputs[2]['month'] == inputs[1])]
