@@ -6,10 +6,11 @@ Created on Tue May  4 17:18:51 2021
 """
 import re
 
-# This function calculates the number of words in a text.
-
 
 def count_words_mp(text):
+    
+    '''This function calculates the number of words in a text.'''
+    
     # remove each occurence of the quotation marks ' and `
     text = re.sub(r"['`]", r'', text)
     # remove each occurence of the hyphen to count a multiple-word noun as one word (e.g., Experten-Gruppe)
