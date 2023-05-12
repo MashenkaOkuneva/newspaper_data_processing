@@ -4,9 +4,9 @@ truecaser-master/
 .ipynb_checkpoints
 __pycache__/
 
-# csv files
 *.csv
 *.conll09
 *.pickle
 *.xlsx
 *.pyc
+*.0
