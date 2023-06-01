@@ -9,12 +9,15 @@ import itertools
 import codecs
 
 def most_freq(input_list, items, freq, print_output=True):
+    
     """
-    This function outputs two-words (three-words) collocations whose frequencies are above 100 (50).
+    This function outputs two-words (three-words) collocations whose frequencies are above 100 (50),
+    considering only the top 10,000 most frequently occurring bigrams (trigrams).
     """
+    
     fdist = nltk.FreqDist(itertools.chain(*input_list))
-    most_common = [word for (word, count) in fdist.most_common()[:2000] if count >= freq]
-    count = [count for (_, count) in fdist.most_common()[:2000] if count >= freq]
+    most_common = [word for (word, count) in fdist.most_common()[:10000] if count >= freq]
+    count = [count for (_, count) in fdist.most_common()[:10000] if count >= freq]
     mfreq = zip(most_common, count)
     if print_output:
         if items == 'bigrams':   
