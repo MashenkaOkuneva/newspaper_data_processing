@@ -9,8 +9,7 @@ Created on Mon Sep 28 14:42:57 2020
 
 from gensim.utils import simple_preprocess
 from gensim import corpora
-from gensim.similarities import Similarity
-from random import randrange
+from gensim.similarities import MatrixSimilarity
 
 def fuzzy_duplicates(inputs):
     """ 
@@ -43,9 +42,7 @@ def fuzzy_duplicates(inputs):
     # Create a corpus (BOW representation).
     corpus = [dictionary.doc2bow(docString) for docString in texts]
     # Build a pairwise cosine similarity index.
-    index = Similarity(corpus=corpus,
-                   num_features=len(dictionary),
-                   output_prefix='on_disk_output_'+str(randrange(12)))
+    index = MatrixSimilarity(corpus, num_features=len(dictionary))
     
     # Parse similarities.
     doc_id = 0
@@ -68,8 +65,19 @@ def fuzzy_duplicates(inputs):
                 if (doc_id, sim_doc_id) not in considered_pairs:
                     considered_pairs.append((doc_id, sim_doc_id))
                     considered_pairs.append((sim_doc_id, doc_id))
-                    if len(documents['texts'][doc_id]) >= len(documents['texts'][sim_doc_id]):
-                        delete_indices.append(documents['index'][sim_doc_id])
+                    
+                    doc1_date = documents['date'][doc_id]
+                    doc2_date = documents['date'][sim_doc_id]
+                    
+                    if doc1_date == doc2_date:
+                        if documents['word_count'][doc_id] >= documents['word_count'][sim_doc_id]:
+                            delete_indices.append(documents['index'][sim_doc_id])                            
+                        else:
+                            delete_indices.append(documents['index'][doc_id])
                     else:
-                        delete_indices.append(documents['index'][doc_id])
+                        if doc1_date < doc2_date:
+                            delete_indices.append(documents['index'][sim_doc_id])
+                        else:
+                            delete_indices.append(documents['index'][doc_id])
+                                                        
     return delete_indices
