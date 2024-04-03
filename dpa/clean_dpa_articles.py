@@ -23,7 +23,7 @@ def clean_dpa_articles(text):
                   'dpa-AFX Broker - die Trader News im dpa-AFX ProFeed',
                   'dpa-AFX Broker - die Trader s von dpa-AFX',
                   '(Der Beitrag wurde dpa in redaktioneller Fassung übermittelt. )',
-                  'NEW', 'New', 'Ende-F e a t u r e', 'F e a t u r e']
+                  'Ende-F e a t u r e', 'F e a t u r e']
 
     for string in to_replace:
     
