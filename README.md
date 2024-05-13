@@ -1,6 +1,6 @@
 # Nowcasting German GDP with text data
 
-# Overview
+## Overview
 
 This repository contains the code accompanying the paper "Nowcasting German GDP with Text Data" by Mariia Okuneva, Philipp Hauber, Kai Carstensen, and Jasper Bär. The repository provides detailed Jupyter notebooks that document the pre-processing steps applied to a dataset of articles from Handelsblatt, Süddeutsche Zeitung (SZ), Welt, and Deutsche Presse-Agentur (dpa).
 
