@@ -28,3 +28,44 @@ The repository is organized into several folders, each dedicated to a specific n
 
 - [**Collocations**](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/Collocations)
   - [Collocations.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/Collocations/Collocations.ipynb): This notebook explains how one can identify two-word and three-word collocations that are later used in topic modeling.
+  
+## Data Pre-processing Steps Applied
+
+### Steps Applied to All or Majority of Sources:
+1. **Short Article Removal**
+2. **Removal of Exact Duplicates**
+3. **Extensive Filtering**
+4. **Language-Based Filtering**
+5. **Umlaut Normalization**
+6. **Number-Heavy Article Removal**
+7. **Table Exclusion**
+8. **Article Continuation Merging**
+9. **Correction of OCR-Induced ‘O’ and ‘0’ Confusion**
+10. **Separation of Merged Words and Numbers**
+11. **Fuzzy Duplicates Removal**
+12. **Exclusion of Articles with a High Proportion of German Names**
+13. **Irrelevant Text Removal**
+
+### Steps Specific to Each Source:
+
+#### SZ (Süddeutsche Zeitung):
+- Exclusion of Regional News
+
+#### Handelsblatt:
+- Special Treatment for Short Articles that are Part of a Continuation
+- Unicode Error Correction
+- Removal of Articles with Encoding Issues and Non-Systematic Errors
+
+#### Welt:
+- Separation of Aggregated Articles
+- Unicode Encoding Error Correction
+- Removal of Articles within Time Intervals with Insufficient Data Availability
+
+#### dpa (Deutsche Presse-Agentur):
+- Deletion of dpa-Specific Duplicated Articles, such as News Corrections, News Updates, Summaries, Overviews, Repeated Articles, and Advance Notifications
+- Separation of Compilations of News Articles into Individual Articles
+- Removal of dpa-AFX Articles
+- Casing Restoration
+
+All the details on each pre-processing step can be found in the code and the appendix for the paper.
+
