@@ -14,13 +14,13 @@ The repository is organized into several folders, each dedicated to a specific n
   - [Handelsblatt.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/Handelsblatt/Handelsblatt.ipynb): A notebook explaining all pre-processing steps applied to the Handelsblatt articles.
 
 - [**SZ**](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/SZ)
-  - [SZ.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/SZ/SZ.ipynb): A notebook detailing the pre-processing steps carried out on articles from Süddeutsche Zeitung.
+  - [SZ.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/SZ/SZ.ipynb): A notebook detailing the pre-processing steps carried out on articles from SZ.
 
 - [**Welt**](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/Welt)
   - [Welt.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/Welt/Welt.ipynb): A notebook that documents the pre-processing steps for Welt articles.
 
 - [**dpa**](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/dpa)
-  - [dpa.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/dpa/dpa.ipynb): A notebook describing the pre-processing steps for articles from Deutsche Presse-Agentur.
+  - [dpa.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/dpa/dpa.ipynb): A notebook describing the pre-processing steps for articles from dpa.
   - [Truecasing.ipynb](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/dpa/Truecasing.ipynb): This notebook details the process of restoring proper casing in the dpa articles.
 
 - [**Umlauts**](https://github.com/MashenkaOkuneva/newspaper_data_processing/tree/master/Umlauts)
@@ -31,7 +31,7 @@ The repository is organized into several folders, each dedicated to a specific n
   
 ## Data Pre-processing Steps Applied
 
-### Steps Applied to All or Majority of Sources:
+### Steps Applied to All or the Majority of Sources:
 1. **Short Article Removal**
 2. **Removal of Exact Duplicates**
 3. **Extensive Filtering**
@@ -48,7 +48,7 @@ The repository is organized into several folders, each dedicated to a specific n
 
 ### Steps Specific to Each Source:
 
-#### SZ (Süddeutsche Zeitung):
+#### SZ:
 - Exclusion of Regional News
 
 #### Handelsblatt:
@@ -61,11 +61,11 @@ The repository is organized into several folders, each dedicated to a specific n
 - Unicode Encoding Error Correction
 - Removal of Articles within Time Intervals with Insufficient Data Availability
 
-#### dpa (Deutsche Presse-Agentur):
+#### dpa:
 - Deletion of dpa-Specific Duplicated Articles, such as News Corrections, News Updates, Summaries, Overviews, Repeated Articles, and Advance Notifications
 - Separation of Compilations of News Articles into Individual Articles
-- Removal of dpa-AFX Articles
-- Casing Restoration
+- Removal of dpa-AFX Wirtschaftsnachrichten Articles
+- Casing Correction
 
 All the details on each pre-processing step can be found in the code and the appendix for the paper.
 
