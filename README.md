@@ -69,3 +69,24 @@ The repository is organized into several folders, each dedicated to a specific n
 
 All the details on each pre-processing step can be found in the code and the appendix for the paper.
 
+## Project Environment Setup
+
+### Python Versions and Environment Setup
+This project uses two separate Python environments: Python 3 for our current code development and Python 2 to ensure compatibility with earlier work developed by others.
+
+- **Python 2 Environment**: For notebooks that require Python 2 (`Collocations.ipynb`, `Truecasing.ipynb`, `Umlauts_fix.ipynb`), please set up your environment using the `py2_env.yml` file available in this repository.
+- **Python 3 Environment**: For the rest of the notebooks (`Handelsblatt.ipynb`, `SZ.ipynb`, `Welt.ipynb`, `dpa.ipynb`), use the `py3_env.yml` file to set up the appropriate Python 3 environment.
+
+### System Requirements
+The code was run on a server equipped with the following specifications for optimal performance:
+- **CPU**: 16-core 2.4 GHz AMD EPYC 7351
+- **Memory**: 256 GB RAM
+- **Operating System**: Windows Server 2022 Standard
+
+## Usage and Citation
+Feel free to use the code provided in this repository for your research or projects. If you utilize this code, please cite the paper: Okuneva M., Hauber P., Carstensen K., & Bär J. (2024). Nowcasting German GDP with Text Data.
+
+## Contact
+If you have any questions about this repository or the related research, please feel free to contact Mariia Okuneva at [mokuneva@stat-econ.uni-kiel.de](mailto:mokuneva@stat-econ.uni-kiel.de).
+
+
