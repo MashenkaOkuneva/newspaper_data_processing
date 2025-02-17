@@ -84,7 +84,7 @@ The code was run on a server equipped with the following specifications for opti
 - **Operating System**: Windows Server 2022 Standard
 
 ## Usage and Citation
-Feel free to use the code provided in this repository for your research or projects. If you utilize this code, please cite the paper: Okuneva M., Hauber P., Carstensen K., & Bär J. (2024). Nowcasting German GDP with Text Data.
+Feel free to use the code provided in this repository for your research or projects. If you utilize this code, please cite the paper: Okuneva M., Hauber P., Carstensen K., & Bär J. (2024). Nowcasting German GDP with Text Data. CESifo Working Paper Series 11587.
 
 ## Contact
 If you have any questions about this repository or the related research, please feel free to contact Mariia Okuneva at [mokuneva@stat-econ.uni-kiel.de](mailto:mokuneva@stat-econ.uni-kiel.de).
